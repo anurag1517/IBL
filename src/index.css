@@ -1,0 +1,228 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --spacing-unit: clamp(0.5rem, 1vw, 1rem);
+}
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  height: 100%;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  font-size: 16px;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.MuiContainer-root {
+  flex-grow: 1;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Background styles */
+.background-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  transition: background-size 0.3s ease;
+}
+
+/* Content overlay for better readability */
+.content-container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  width: 100%;
+  backdrop-filter: blur(0px);
+  transition: backdrop-filter 0.3s ease;
+}
+
+.content-container:hover {
+  backdrop-filter: blur(3px);
+}
+
+/* Responsive container */
+.container {
+  width: 100%;
+  max-width: min(95%, 1400px);
+  margin: 0 auto;
+  padding: 0 var(--spacing-unit);
+}
+
+@media screen and (min-width: 600px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .container {
+    padding: 0 3rem;
+  }
+}
+
+/* Add overlay to improve text readability over background */
+.content-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+}
+
+/* Responsive adjustments */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 14px;
+  }
+  .container {
+    padding: 10px;
+  }
+  .background-wrapper {
+    background-size: auto 100vh;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 960px) {
+  html {
+    font-size: 15px;
+  }
+  .background-wrapper {
+    background-size: cover;
+  }
+}
+
+@media screen and (min-width: 961px) and (max-width: 1280px) {
+  html {
+    font-size: 16px;
+  }
+  .background-wrapper {
+    background-size: cover;
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  html {
+    font-size: 18px;
+  }
+  .background-wrapper {
+    background-size: cover;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .background-wrapper {
+    background-size: 100% auto;
+    background-position: center center;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .background-wrapper {
+    background-size: auto 100%;
+    background-position: center top;
+  }
+}
+
+/* High DPI screens */
+@media screen and (-webkit-min-device-pixel-ratio: 2), 
+       screen and (min-resolution: 192dpi) {
+  .background-wrapper {
+    background-size: cover;
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
