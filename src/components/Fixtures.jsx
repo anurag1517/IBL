@@ -20,7 +20,7 @@ const Fixtures = () => {
       team1: 'Skull Scorchers',
       team2: 'Beast Bulls',
       venue: 'Basketball Court',
-      status: 'Upcoming'
+      status: 'Beast Bulls'
     },
     {
       date: '05 Apr 2025',
@@ -28,7 +28,7 @@ const Fixtures = () => {
       team1: 'The Real Slim Shady`s',
       team2: 'Dark Knights',
       venue: 'Basketball Court',
-      status: 'Upcoming'
+      status: 'The Real Slim Shady`s'
     },
     {
         date: '05 Apr 2025',
@@ -52,7 +52,7 @@ const Fixtures = () => {
         team1: 'Small Bois Squad',
         team2: '420 Ballers',
         venue: 'Basketball Court',
-        status: 'Upcoming'
+        status: 'Small Bois Squad'
       },
       {
         date: '05 Apr 2025',
@@ -68,7 +68,7 @@ const Fixtures = () => {
         team1: 'Skull Scorchers',
         team2: 'Small Bois Squad',
         venue: 'Basketball Court',
-        status: 'Upcoming'
+        status: 'Skull Scorchers'
       },
       {
         date: '05 Apr 2025',
@@ -76,7 +76,7 @@ const Fixtures = () => {
         team1: 'Akatsuki',
         team2: 'The Real Slim Shady`s',
         venue: 'Basketball Court',
-        status: 'Upcoming'
+        status: 'The Real Slim Shady`s'
       },
       {
         date: '06 Apr 2025',
@@ -84,7 +84,7 @@ const Fixtures = () => {
         team1: 'The Real Slim Shady`s',
         team2: 'Hellfire Clan',
         venue: 'Basketball Court',
-        status: 'Upcoming'
+        status: 'The Real Slim Shady`s'
       },
       {
         date: '06 Apr 2025',
@@ -92,7 +92,7 @@ const Fixtures = () => {
         team1: 'Skull Scorchers',
         team2: '420 Ballers',
         venue: 'Basketball Court',
-        status: 'Upcoming'
+        status: 'Skull Scorchers'
       },
       {
         date: '06 Apr 2025',
@@ -108,7 +108,7 @@ const Fixtures = () => {
         team1: 'Beast Bull',
         team2: 'Small Bois Squad',
         venue: 'Basketball Court',
-        status: 'Upcoming'
+        status: 'Small Bois Squad'
       },
     // Add more matches as needed
   ];
