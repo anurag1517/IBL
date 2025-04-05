@@ -143,7 +143,7 @@ const Home = () => {
           <Grid item xs={12}>
             <Card 
               sx={{ 
-                mt: { xs: 800, sm: 6 },
+                mt: { xs: 4, sm: 6 },
                 background: 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
                 borderRadius: 4,
