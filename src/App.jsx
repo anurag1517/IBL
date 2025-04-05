@@ -5,8 +5,9 @@ import Home from './pages/Home';
 import Fixtures from './components/Fixtures';
 import PointsTable from './components/PointsTable';
 import Stats from './components/Stats';
-import AdminDashboard from './components/admin/AdminDashboard';
 import Teams from './components/Teams';
+import Archives from './components/Archives';
+//import Gallery from './components/Gallery';
 import { Box } from '@mui/material';
 import basketBg from './assets/images/basket.jpg';
 import { ThemeProvider } from '@mui/material/styles';
@@ -56,6 +57,8 @@ const App = () => {
               <Route path="/teams" element={<Teams />} />
               <Route path="/points-table" element={<PointsTable />} />
               <Route path="/stats" element={<Stats />} />
+              <Route path="/archives" element={<Archives />} />
+              {/* <Route path="/gallery" element={<Gallery />} /> */}
               {/* <Route path="/admin" element={<AdminDashboard />} /> */}
             </Routes>
           </Box>
