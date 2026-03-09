@@ -88,35 +88,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Background styles */
-.background-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  transition: background-size 0.3s ease;
-}
-
-/* Content overlay for better readability */
-.content-container {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  width: 100%;
-  backdrop-filter: blur(0px);
-  transition: backdrop-filter 0.3s ease;
-}
-
-.content-container:hover {
-  backdrop-filter: blur(3px);
-}
-
 /* Responsive container */
 .container {
   width: 100%;
@@ -135,14 +106,6 @@ button:focus-visible {
   .container {
     padding: 0 3rem;
   }
-}
-
-/* Add overlay to improve text readability over background */
-.content-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 8px;
-  backdrop-filter: blur(4px);
 }
 
 /* Responsive adjustments */
@@ -166,17 +129,11 @@ button:focus-visible {
   .container {
     padding: 10px;
   }
-  .background-wrapper {
-    background-size: auto 100vh;
-  }
 }
 
 @media screen and (min-width: 601px) and (max-width: 960px) {
   html {
     font-size: 15px;
-  }
-  .background-wrapper {
-    background-size: cover;
   }
 }
 
@@ -184,45 +141,16 @@ button:focus-visible {
   html {
     font-size: 16px;
   }
-  .background-wrapper {
-    background-size: cover;
-  }
 }
 
 @media screen and (min-width: 1281px) {
   html {
     font-size: 18px;
   }
-  .background-wrapper {
-    background-size: cover;
-  }
 }
 
 @media screen and (min-width: 1920px) {
   html {
     font-size: 18px;
-  }
-}
-
-@media screen and (orientation: landscape) {
-  .background-wrapper {
-    background-size: 100% auto;
-    background-position: center center;
-  }
-}
-
-@media screen and (orientation: portrait) {
-  .background-wrapper {
-    background-size: auto 100%;
-    background-position: center top;
-  }
-}
-
-/* High DPI screens */
-@media screen and (-webkit-min-device-pixel-ratio: 2), 
-       screen and (min-resolution: 192dpi) {
-  .background-wrapper {
-    background-size: cover;
-    image-rendering: -webkit-optimize-contrast;
   }
 }
