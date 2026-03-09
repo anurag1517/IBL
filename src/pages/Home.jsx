@@ -219,15 +219,6 @@ const Home = () => {
 
           {/* Quotes Section (Cascading Marquee) */}
           <Grid item xs={12}>
-            <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <Typography variant="h4" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, color: '#1a1a1a' }}>
-                Words of Wisdom
-              </Typography>
-              <Typography variant="subtitle1" sx={{ color: '#666', fontFamily: "'Montserrat', sans-serif", mt: 1 }}>
-                Motivation from the legends of the game
-              </Typography>
-            </Box>
-
             <Box
               sx={{
                 display: 'flex',
