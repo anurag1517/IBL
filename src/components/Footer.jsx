@@ -13,21 +13,21 @@ const Footer = () => {
       }}
     >
       <Container maxWidth="sm">
-        <Typography 
-          variant="body1" 
+        <Typography
+          variant="body1"
           align="center"
           sx={{ color: 'black' }}
         >
-          © {new Date().getFullYear()} IBL4.0 All rights reserved.
+          © {new Date().getFullYear()} IBL5.0 All rights reserved.
         </Typography>
-        <Typography 
-          variant="body2" 
+        <Typography
+          variant="body2"
           align="center"
           sx={{ color: 'black' }}
         >
-          <Link 
-            href="#" 
-            sx={{ 
+          <Link
+            href="#"
+            sx={{
               color: 'black',
               '&:hover': {
                 color: 'black',
@@ -38,9 +38,9 @@ const Footer = () => {
             Privacy Policy
           </Link>
           {' | '}
-          <Link 
-            href="#" 
-            sx={{ 
+          <Link
+            href="#"
+            sx={{
               color: 'black',
               '&:hover': {
                 color: 'black',
