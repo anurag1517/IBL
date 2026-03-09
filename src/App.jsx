@@ -24,21 +24,31 @@ const App = () => {
 
   useEffect(() => {
     const initializeDataIfEmpty = async () => {
-      // Check if collections are empty, if so, populate with initial data
-      const fixturesSnapshot = await getDocs(collection(db, 'fixtures'));
-      if (fixturesSnapshot.empty) {
-        console.log("Initializing fixtures in Firestore...");
-        for (const fixture of initialFixturesWithIds) {
-          await setDoc(doc(db, 'fixtures', fixture.id), fixture);
-        }
-      }
+      try {
+        const initDocRef = doc(db, 'config', 'init');
+        const initDocSnap = await getDocs(collection(db, 'config'));
 
-      const pointsSnapshot = await getDocs(collection(db, 'pointsTable'));
-      if (pointsSnapshot.empty) {
-        console.log("Initializing points table in Firestore...");
-        for (const team of initialTeamStandingsWithIds) {
-          await setDoc(doc(db, 'pointsTable', team.id), team);
+        let isInitialized = false;
+        initDocSnap.forEach((doc) => {
+          if (doc.id === 'init') isInitialized = true;
+        });
+
+        if (!isInitialized) {
+          console.log("First time setup: Initializing Firestore...");
+
+          // Mark as initialized first to prevent race conditions
+          await setDoc(initDocRef, { initialized: true, timestamp: new Date() });
+
+          for (const fixture of initialFixturesWithIds) {
+            await setDoc(doc(db, 'fixtures', fixture.id), fixture);
+          }
+
+          for (const team of initialTeamStandingsWithIds) {
+            await setDoc(doc(db, 'pointsTable', team.id), team);
+          }
         }
+      } catch (error) {
+        console.error("Error checking initialization status:", error);
       }
     };
 
