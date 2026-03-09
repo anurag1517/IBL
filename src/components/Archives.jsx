@@ -1,14 +1,14 @@
 import React from 'react';
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
+import {
+  Box,
+  Container,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Paper,
   Chip,
   useTheme,
@@ -20,42 +20,20 @@ import {
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import Footer from './Footer';
 
-const Archives = () => {
+const Archives = ({ archives = [] }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
-  const archiveData = [
-    {
-      Edition: 'IBL 3.0',
-      winner: 'The Real Slim Shadys',
-      runnerUp: '420 Hoopers',
-      secondRunnerUp: 'Skull Scorchers',
-      topScorer: 'Alex Horo (420 Hoopers)',
-      points: '69'
-    },
-    {
-      Edition: 'IBL 2.0',
-      winner: 'The Real Slim Shadys',
-      runnerUp: 'Skull Scorchers',
-      secondRunnerUp: 'Beast Bulls',
-      topScorer: 'R Nagasurya (Skull Scorchers)',
-      points: '54'
-    },
-    {
-      Edition: 'IBL 1.0',
-      winner: 'Black Mambas',
-      runnerUp: 'To be updated',
-      secondRunnerUp: 'To be updated',
-      topScorer: 'To be updated',
-      points: 'To be updated'
-    }
-  ];
+  // Sort by Edition to ensure newest first
+  const sortedArchives = [...archives].sort((a, b) => {
+    return b.Edition.localeCompare(a.Edition, undefined, { numeric: true, sensitivity: 'base' });
+  });
 
   // Mobile/Tablet Card View
   const MobileView = () => (
-    <Grid 
-      container 
+    <Grid
+      container
       spacing={2}
       sx={{
         mx: 'auto', // Center the grid
@@ -63,11 +41,11 @@ const Archives = () => {
         px: 2 // Add horizontal padding
       }}
     >
-      {archiveData.map((data) => (
-        <Grid 
-          item 
-          xs={12} 
-          sm={12} 
+      {sortedArchives.map((data) => (
+        <Grid
+          item
+          xs={12}
+          sm={12}
           key={data.Edition}
           sx={{
             '& .MuiCard-root': {
@@ -76,8 +54,8 @@ const Archives = () => {
             }
           }}
         >
-          <Card 
-            sx={{ 
+          <Card
+            sx={{
               backgroundColor: 'rgba(255, 255, 255, 0.95)',
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
               borderRadius: 2,
@@ -88,9 +66,9 @@ const Archives = () => {
             }}
           >
             <CardContent>
-              <Typography 
-                variant="h6" 
-                sx={{ 
+              <Typography
+                variant="h6"
+                sx={{
                   fontWeight: 600,
                   fontFamily: "'Poppins', sans-serif",
                   color: '#1a1a1a',
@@ -99,7 +77,7 @@ const Archives = () => {
               >
                 {data.Edition}
               </Typography>
-              
+
               <Box sx={{ mb: 2 }}>
                 <Typography variant="subtitle2" sx={{ color: '#666', mb: 1 }}>
                   Champions
@@ -157,9 +135,9 @@ const Archives = () => {
 
   // Desktop Table View
   const DesktopView = () => (
-    <TableContainer 
-      component={Paper} 
-      sx={{ 
+    <TableContainer
+      component={Paper}
+      sx={{
         backgroundColor: 'rgba(255, 255, 255, 0.95)',
         boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
         borderRadius: 2,
@@ -179,9 +157,9 @@ const Archives = () => {
       <Table sx={{ minWidth: { xs: 650, sm: 750, md: 900 } }}>
         <TableHead>
           <TableRow sx={{ backgroundColor: 'rgba(0,0,0,0.04)' }}>
-            <TableCell 
-              sx={{ 
-                fontWeight: 700, 
+            <TableCell
+              sx={{
+                fontWeight: 700,
                 fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
                 fontFamily: "'Montserrat', sans-serif",
                 py: { xs: 1.5, sm: 2 },
@@ -191,32 +169,32 @@ const Archives = () => {
             >
               Edition
             </TableCell>
-            <TableCell sx={{ 
-              fontWeight: 700, 
+            <TableCell sx={{
+              fontWeight: 700,
               fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
               fontFamily: "'Montserrat', sans-serif",
               minWidth: '150px'
             }}>
               Champions
             </TableCell>
-            <TableCell sx={{ 
-              fontWeight: 700, 
+            <TableCell sx={{
+              fontWeight: 700,
               fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
               fontFamily: "'Montserrat', sans-serif",
               minWidth: '130px'
             }}>
               Runners Up
             </TableCell>
-            <TableCell sx={{ 
-              fontWeight: 700, 
+            <TableCell sx={{
+              fontWeight: 700,
               fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
               fontFamily: "'Montserrat', sans-serif",
               minWidth: '130px'
             }}>
               2nd Runners Up
             </TableCell>
-            <TableCell sx={{ 
-              fontWeight: 700, 
+            <TableCell sx={{
+              fontWeight: 700,
               fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
               fontFamily: "'Montserrat', sans-serif",
               minWidth: '180px'
@@ -226,20 +204,20 @@ const Archives = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {archiveData.map((row) => (
-            <TableRow 
+          {sortedArchives.map((row) => (
+            <TableRow
               key={row.Edition}
-              sx={{ 
-                '&:hover': { 
+              sx={{
+                '&:hover': {
                   backgroundColor: 'rgba(0,0,0,0.02)',
                   transition: 'background-color 0.3s ease'
                 }
               }}
             >
               <TableCell sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-                <Typography 
-                  variant="h6" 
-                  sx={{ 
+                <Typography
+                  variant="h6"
+                  sx={{
                     fontWeight: 600,
                     fontFamily: "'Poppins', sans-serif",
                     color: '#1a1a1a',
@@ -266,13 +244,13 @@ const Archives = () => {
                   }}
                 />
               </TableCell>
-              <TableCell sx={{ 
+              <TableCell sx={{
                 color: '#666',
                 fontSize: { xs: '0.9rem', sm: '1rem' }
               }}>
                 {row.runnerUp}
               </TableCell>
-              <TableCell sx={{ 
+              <TableCell sx={{
                 color: '#666',
                 fontSize: { xs: '0.9rem', sm: '1rem' }
               }}>
@@ -280,16 +258,16 @@ const Archives = () => {
               </TableCell>
               <TableCell>
                 <Box>
-                  <Typography sx={{ 
-                    color: '#1a1a1a', 
+                  <Typography sx={{
+                    color: '#1a1a1a',
                     fontWeight: 500,
                     fontSize: { xs: '0.9rem', sm: '1rem' }
                   }}>
                     {row.topScorer}
                   </Typography>
-                  <Typography 
-                    variant="caption" 
-                    sx={{ 
+                  <Typography
+                    variant="caption"
+                    sx={{
                       color: '#666',
                       fontSize: { xs: '0.8rem', sm: '0.9rem' }
                     }}
@@ -307,9 +285,9 @@ const Archives = () => {
 
   return (
     <>
-      <Container 
-        maxWidth="lg" 
-        sx={{ 
+      <Container
+        maxWidth="lg"
+        sx={{
           mt: { xs: 2, sm: 3, md: 4 },
           mb: { xs: 2, sm: 3, md: 4 },
           px: { xs: 1, sm: 2 } // Add consistent horizontal padding
@@ -322,11 +300,11 @@ const Archives = () => {
           borderRadius: 2,
           overflowX: 'auto' // Enable horizontal scroll on small screens
         }}>
-          <Typography 
-            variant="h3" 
-            sx={{ 
-              mb: { xs: 2, sm: 3, md: 4 }, 
-              color: '#1a1a1a', 
+          <Typography
+            variant="h3"
+            sx={{
+              mb: { xs: 2, sm: 3, md: 4 },
+              color: '#1a1a1a',
               textAlign: 'center',
               fontWeight: 700,
               fontFamily: "'Poppins', sans-serif",

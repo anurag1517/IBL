@@ -29,7 +29,7 @@ function TabPanel(props) {
   );
 }
 
-const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData }) => {
+const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
 
@@ -50,6 +50,10 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData }) => {
   // Gallery states
   const [openGalleryDialog, setOpenGalleryDialog] = useState(false);
   const [editingGallery, setEditingGallery] = useState(null);
+
+  // Archive states
+  const [openArchiveDialog, setOpenArchiveDialog] = useState(false);
+  const [editingArchive, setEditingArchive] = useState(null);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -245,6 +249,45 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData }) => {
     }
   };
 
+  // --- Archives Logic ---
+  const handleOpenArchive = (archive = null) => {
+    if (archive) {
+      setEditingArchive(archive);
+    } else {
+      setEditingArchive({
+        id: `archive-${Date.now()}`,
+        Edition: '',
+        winner: '',
+        runnerUp: '',
+        secondRunnerUp: '',
+        topScorer: '',
+        points: ''
+      });
+    }
+    setOpenArchiveDialog(true);
+  };
+
+  const handleSaveArchive = async () => {
+    try {
+      await setDoc(doc(db, 'archives', editingArchive.id), editingArchive);
+      setOpenArchiveDialog(false);
+    } catch (error) {
+      console.error("Error saving archive: ", error);
+      alert("Failed to save archive");
+    }
+  };
+
+  const handleDeleteArchive = async (id) => {
+    if (window.confirm("Are you sure you want to delete this archive record?")) {
+      try {
+        await deleteDoc(doc(db, 'archives', id));
+      } catch (error) {
+        console.error("Error deleting archive: ", error);
+        alert("Failed to delete archive");
+      }
+    }
+  };
+
   return (
     <Box sx={{ p: { xs: 2, sm: 4 }, backgroundColor: 'rgba(255,255,255,0.9)', minHeight: '80vh', m: { xs: 1, sm: 2 }, borderRadius: 2 }}>
       <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
@@ -257,6 +300,7 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData }) => {
           <Tab label="Points Table" />
           <Tab label="Stats" />
           <Tab label="Gallery" />
+          <Tab label="Archives" />
         </Tabs>
       </Box>
 
@@ -421,6 +465,53 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData }) => {
             </Grid>
           ))}
         </Grid>
+      </TabPanel>
+
+      {/* ARCHIVES TAB */}
+      <TabPanel value={tabIndex} index={4}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+          <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenArchive()} sx={{ backgroundColor: 'black' }}>
+            Add Archive Record
+          </Button>
+        </Box>
+        <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow sx={{ '& th': { fontWeight: 'bold' } }}>
+                <TableCell>Edition</TableCell>
+                <TableCell>Champions</TableCell>
+                <TableCell>Runners Up</TableCell>
+                <TableCell>Top Scorer</TableCell>
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {[...archives]
+                .sort((a, b) => b.Edition.localeCompare(a.Edition, undefined, { numeric: true, sensitivity: 'base' }))
+                .map((record) => (
+                  <TableRow key={record.id}>
+                    <TableCell><strong>{record.Edition}</strong></TableCell>
+                    <TableCell>{record.winner}</TableCell>
+                    <TableCell>{record.runnerUp}</TableCell>
+                    <TableCell>{record.topScorer}</TableCell>
+                    <TableCell align="right">
+                      <IconButton size="small" onClick={() => handleOpenArchive(record)}>
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                      <IconButton size="small" color="error" onClick={() => handleDeleteArchive(record.id)}>
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              {archives.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">No archives available</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </TabPanel>
 
       {/* FIXTURE DIALOG */}
@@ -613,6 +704,67 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData }) => {
         <DialogActions>
           <Button onClick={() => setOpenGalleryDialog(false)}>Cancel</Button>
           <Button variant="contained" onClick={handleSaveGallery} sx={{ backgroundColor: 'black' }}>Save</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* ARCHIVE DIALOG */}
+      <Dialog open={openArchiveDialog} onClose={() => setOpenArchiveDialog(false)} fullWidth maxWidth="sm">
+        <DialogTitle>{editingArchive?.id?.startsWith('archive-') && !editingArchive?.Edition ? 'Add Archive Record' : 'Edit Archive Record'}</DialogTitle>
+        <DialogContent dividers>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth label="Edition (e.g. IBL 3.0)"
+                value={editingArchive?.Edition || ''}
+                onChange={(e) => setEditingArchive({ ...editingArchive, Edition: e.target.value })}
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth label="Champions"
+                value={editingArchive?.winner || ''}
+                onChange={(e) => setEditingArchive({ ...editingArchive, winner: e.target.value })}
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth label="Runners Up"
+                value={editingArchive?.runnerUp || ''}
+                onChange={(e) => setEditingArchive({ ...editingArchive, runnerUp: e.target.value })}
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth label="2nd Runners Up"
+                value={editingArchive?.secondRunnerUp || ''}
+                onChange={(e) => setEditingArchive({ ...editingArchive, secondRunnerUp: e.target.value })}
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <TextField
+                fullWidth label="Top Scorer (e.g. Alex Horo (420 Hoopers))"
+                value={editingArchive?.topScorer || ''}
+                onChange={(e) => setEditingArchive({ ...editingArchive, topScorer: e.target.value })}
+                margin="dense"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                fullWidth label="Points"
+                value={editingArchive?.points || ''}
+                onChange={(e) => setEditingArchive({ ...editingArchive, points: e.target.value })}
+                margin="dense"
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenArchiveDialog(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleSaveArchive} sx={{ backgroundColor: 'black' }}>Save</Button>
         </DialogActions>
       </Dialog>
 

@@ -22,6 +22,7 @@ const App = () => {
   const [pointsTable, setPointsTable] = useState([]);
   const [stats, setStats] = useState([]);
   const [gallery, setGallery] = useState({});
+  const [archives, setArchives] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,6 +59,12 @@ const App = () => {
         galleryData[doc.id] = doc.data().images || [];
       });
       setGallery(galleryData);
+    });
+
+    // Listen to archives
+    const unsubscribeArchives = onSnapshot(collection(db, 'archives'), (snapshot) => {
+      const archivesData = snapshot.docs.map(doc => doc.data());
+      setArchives(archivesData);
       setLoading(false);
     });
 
@@ -66,6 +73,7 @@ const App = () => {
       unsubscribePoints();
       unsubscribeStats();
       unsubscribeGallery();
+      unsubscribeArchives();
     };
   }, []);
 
@@ -112,7 +120,7 @@ const App = () => {
               <Route path="/teams" element={<Teams />} />
               <Route path="/points-table" element={<PointsTable pointsTable={pointsTable} />} />
               <Route path="/stats" element={<Stats stats={stats} />} />
-              <Route path="/archives" element={<Archives />} />
+              <Route path="/archives" element={<Archives archives={archives} />} />
               <Route path="/gallery" element={<Gallery galleryData={gallery} />} />
               <Route path="/admin" element={
                 <AdminDashboard
@@ -122,6 +130,7 @@ const App = () => {
                   setPointsTable={setPointsTable}
                   stats={stats}
                   galleryData={gallery}
+                  archives={archives}
                 />
               } />
             </Routes>
