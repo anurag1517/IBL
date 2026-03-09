@@ -1,95 +1,20 @@
 import React from 'react';
-import { 
-  Box, 
-  Paper, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
-  Container 
+  Container
 } from '@mui/material';
 import Footer from './Footer';
 
-const PointsTable = () => {
-  const teamStandings = [
-    {
-      team: 'Dark Knights',
-      played: 1,
-      won: 0,
-      lost: 1,
-      points: 0,
-      pointDiff: -12, // Add point difference
-      pool: 'A'
-    },
-    {
-      team: 'Hellfire Clan',
-      played: 1,
-      won: 0,
-      lost: 1,
-      points: 0,
-      pointDiff: -14, // Add point difference
-      pool: 'A'
-    },
-    {
-      team: 'Akatsuki',
-      played: 1,
-      won: 0,
-      lost: 1,
-      points: 0,
-      pointDiff: -9, // Add point difference
-      pool: 'A'
-    },
-    {
-      team: 'The Real Slim Shady`s ',
-      played: 3,
-      won: 3,
-      lost: 0,
-      points: 6,
-      pointDiff: 35, // Add point difference
-      pool: 'A'
-    },
-
-    {
-      team: 'Skull Scorchers',
-      played: 3,
-      won: 2,
-      lost: 1,
-      points: 4,
-      pointDiff: 22, // Add point difference
-      pool: 'B'
-    },
-    {
-      team: 'Beast Bulls',
-      played: 2,
-      won: 1,
-      lost: 1,
-      points: 2,
-      pointDiff: 1, // Add point difference
-      pool: 'B'
-    },
-    {
-      team: '420 Ballers',
-      played: 2,
-      won: 0,
-      lost: 2,
-      points: 0,
-      pointDiff: -32, // Add point difference
-      pool: 'B'
-    },
-    {
-      team: 'Small Bois Squad',
-      played: 3,
-      won: 2,
-      lost: 1,
-      points: 4,
-      pointDiff: 9, // Add point difference
-      pool: 'B'
-    },
-   
-  ];
+const PointsTable = ({ pointsTable }) => {
+  const teamStandings = pointsTable || [];
 
   // Modified sorting function with point difference as secondary criteria
   const sortTeams = (teams) => {
@@ -133,9 +58,9 @@ const PointsTable = () => {
       >
         Pool {poolName}
       </Typography>
-      <TableContainer 
-        component={Paper} 
-        sx={{ 
+      <TableContainer
+        component={Paper}
+        sx={{
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
           borderRadius: 2,
           overflow: 'auto' // Enable horizontal scroll for mobile
@@ -160,7 +85,7 @@ const PointsTable = () => {
               <TableCell align="center">Won</TableCell>
               <TableCell align="center">Lost</TableCell>
               <TableCell align="center">Points</TableCell>
-              <TableCell align="center" sx={{ 
+              <TableCell align="center" sx={{
                 minWidth: '100px'
               }}>
                 Point Diff
@@ -183,9 +108,9 @@ const PointsTable = () => {
                     backgroundColor: 'rgba(0, 0, 0, 0.05)',
                     transition: 'background-color 0.3s ease'
                   },
-                  backgroundColor: index === 0 
+                  backgroundColor: index === 0
                     ? 'rgba(255, 215, 0, 0.05)'
-                    : index === 1 
+                    : index === 1
                       ? 'rgba(192, 192, 192, 0.05)'
                       : 'transparent'
                 }}
@@ -197,16 +122,16 @@ const PointsTable = () => {
                 <TableCell align="center">{team.played}</TableCell>
                 <TableCell align="center">{team.won}</TableCell>
                 <TableCell align="center">{team.lost}</TableCell>
-                <TableCell 
+                <TableCell
                   align="center"
-                  sx={{ 
+                  sx={{
                     fontWeight: 'bold',
                     color: index === 0 ? '#FFD700' : index === 1 ? '#C0C0C0' : 'inherit'
                   }}
                 >
                   {team.points}
                 </TableCell>
-                <TableCell 
+                <TableCell
                   align="center"
                   sx={{
                     color: team.pointDiff > 0 ? 'green' : team.pointDiff < 0 ? 'red' : 'inherit',

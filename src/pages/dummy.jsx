@@ -9,10 +9,10 @@ const Home = () => {
   const isMediumScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
         minHeight: '100vh',
         width: '100%',
         overflow: 'hidden',
@@ -21,10 +21,10 @@ const Home = () => {
       }}
     >
       {/* <Navbar /> */}
-      
-      <Container 
+
+      <Container
         maxWidth={false}
-        sx={{ 
+        sx={{
           mt: { xs: 2, sm: 3, md: 4 },
           mb: { xs: 2, sm: 3, md: 4 },
           px: { xs: 2, sm: 3, md: 4 },
@@ -38,15 +38,15 @@ const Home = () => {
           mx: 'auto'
         }}
       >
-        <Grid 
-          container 
+        <Grid
+          container
           spacing={{ xs: 2, sm: 3, md: 4 }}
           sx={{ width: '100%', margin: '0 auto' }}
         >
           <Grid item xs={12}>
-            <Typography 
-              variant={isSmallScreen ? 'h5' : 'h4'} 
-              component="h2" 
+            <Typography
+              variant={isSmallScreen ? 'h5' : 'h4'}
+              component="h2"
               gutterBottom
               sx={{
                 textAlign: { xs: 'center', sm: 'left' },
@@ -57,13 +57,13 @@ const Home = () => {
                 }
               }}
             >
-              Welcome to IBL 4.0
+              Welcome to IBL 5.0
             </Typography>
           </Grid>
-          
+
           <Grid item xs={12} md={6}>
-            <Card 
-              sx={{ 
+            <Card
+              sx={{
                 height: '100%',
                 minHeight: { xs: '200px', sm: '250px' },
                 display: 'flex',
@@ -71,14 +71,14 @@ const Home = () => {
               }}
             >
               <CardContent sx={{ flexGrow: 1, p: { xs: 2, sm: 3 } }}>
-                <Typography 
-                  variant={isSmallScreen ? 'subtitle1' : 'h6'} 
+                <Typography
+                  variant={isSmallScreen ? 'subtitle1' : 'h6'}
                   gutterBottom
                   sx={{ mb: 2 }}
                 >
                   Latest Updates
                 </Typography>
-                <Typography 
+                <Typography
                   variant="body1"
                   sx={{
                     fontSize: {
@@ -93,10 +93,10 @@ const Home = () => {
               </CardContent>
             </Card>
           </Grid>
-          
+
           <Grid item xs={12} md={6}>
-            <Card 
-              sx={{ 
+            <Card
+              sx={{
                 height: '100%',
                 minHeight: { xs: '200px', sm: '250px' },
                 display: 'flex',
@@ -104,14 +104,14 @@ const Home = () => {
               }}
             >
               <CardContent sx={{ flexGrow: 1, p: { xs: 2, sm: 3 } }}>
-                <Typography 
-                  variant={isSmallScreen ? 'subtitle1' : 'h6'} 
+                <Typography
+                  variant={isSmallScreen ? 'subtitle1' : 'h6'}
                   gutterBottom
                   sx={{ mb: 2 }}
                 >
                   Upcoming Matches
                 </Typography>
-                <Typography 
+                <Typography
                   variant="body1"
                   sx={{
                     fontSize: {

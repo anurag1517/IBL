@@ -34,23 +34,23 @@ const Navbar = () => {
 
   const drawer = (
     <List>
-      <ListItem 
-        component={RouterLink} 
+      <ListItem
+        component={RouterLink}
         to="/"
         sx={{
           mb: 2,
           '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' }
         }}
       >
-        <Typography 
-          variant="h6" 
-          sx={{ 
+        <Typography
+          variant="h6"
+          sx={{
             color: 'black',
             fontWeight: 'bold',
             fontFamily: "'Poppins', sans-serif",
           }}
         >
-          IBL 4.0
+          IBL 5.0
         </Typography>
       </ListItem>
       {navItems.map((item) => (
@@ -64,9 +64,9 @@ const Navbar = () => {
             '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' }
           }}
         >
-          <ListItemText 
+          <ListItemText
             primary={item.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-            sx={{ 
+            sx={{
               color: 'black',
               '& .MuiTypography-root': {
                 fontFamily: "'Montserrat', sans-serif",
@@ -80,16 +80,16 @@ const Navbar = () => {
   );
 
   return (
-    <AppBar 
-      position="static" 
+    <AppBar
+      position="static"
       elevation={0}
-      sx={{ 
+      sx={{
         background: 'transparent',
       }}
     >
-      <Toolbar 
-        sx={{ 
-          display: 'flex', 
+      <Toolbar
+        sx={{
+          display: 'flex',
           justifyContent: 'space-between',
           py: { xs: 1, sm: 1.5, md: 2 },
           px: { xs: 1, sm: 2, md: 3 },
@@ -99,11 +99,11 @@ const Navbar = () => {
       >
         {/* Logo */}
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography 
-            variant="h6" 
-            component={RouterLink} 
-            to="/" 
-            sx={{ 
+          <Typography
+            variant="h6"
+            component={RouterLink}
+            to="/"
+            sx={{
               textDecoration: 'none',
               color: 'black',
               fontWeight: 'bold',
@@ -117,7 +117,7 @@ const Navbar = () => {
               }
             }}
           >
-            IBL 4.0
+            IBL 5.0
           </Typography>
         </Box>
 
@@ -128,7 +128,7 @@ const Navbar = () => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ 
+            sx={{
               color: 'black',
               '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.08)' }
             }}
@@ -137,19 +137,19 @@ const Navbar = () => {
           </IconButton>
         ) : (
           /* Desktop Navigation */
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
             alignItems: 'center',
             gap: { sm: 1, md: 2, lg: 3 },
             flex: '2',
           }}>
             {navItems.map((item) => (
-              <Button 
+              <Button
                 key={item}
-                component={RouterLink} 
+                component={RouterLink}
                 to={`/${item}`}
-                sx={{ 
+                sx={{
                   color: 'black',
                   borderBottom: isActiveRoute(`/${item}`) ? '2px solid black' : 'none',
                   borderRadius: '4px',
@@ -181,8 +181,8 @@ const Navbar = () => {
           }}
           sx={{
             display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { 
-              boxSizing: 'border-box', 
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
               width: 240,
               backgroundColor: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(10px)'

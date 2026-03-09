@@ -15,16 +15,16 @@ const Home = () => {
   ];
 
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
         minHeight: '100vh',
       }}
     >
-      <Container 
+      <Container
         maxWidth={false}
-        sx={{ 
+        sx={{
           mt: { xs: 4, sm: 6, md: 8 },
           mb: { xs: 4, sm: 6, md: 8 },
           px: { xs: 2, sm: 3, md: 4 },
@@ -51,7 +51,7 @@ const Home = () => {
                 backdropFilter: 'blur(10px)',
               }}
             >
-              <Typography 
+              <Typography
                 variant="h1"
                 sx={{
                   fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
@@ -66,9 +66,9 @@ const Home = () => {
                   color: 'transparent',
                 }}
               >
-                Welcome to IBL 4.0
+                Welcome to IBL 5.0
               </Typography>
-              <Typography 
+              <Typography
                 variant="h5"
                 sx={{
                   fontFamily: "'Montserrat', sans-serif",
@@ -86,8 +86,8 @@ const Home = () => {
           {/* Quotes Section */}
           {quotes.map((quote, index) => (
             <Grid item xs={12} md={6} key={index}>
-              <Card 
-                sx={{ 
+              <Card
+                sx={{
                   height: 'auto',
                   minHeight: { xs: '10px', sm: '16px' },
                   display: 'flex',
@@ -102,14 +102,14 @@ const Home = () => {
                   }
                 }}
               >
-                <CardContent sx={{ 
+                <CardContent sx={{
                   p: { xs: 2.5, sm: 3 },
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                   gap: 2
                 }}>
-                  <Typography 
+                  <Typography
                     variant="h6"
                     sx={{
                       fontFamily: "'Playfair Display', serif",
@@ -122,7 +122,7 @@ const Home = () => {
                   >
                     "{quote.text}"
                   </Typography>
-                  <Typography 
+                  <Typography
                     variant="subtitle1"
                     sx={{
                       fontFamily: "'Montserrat', sans-serif",
@@ -141,8 +141,8 @@ const Home = () => {
 
           {/* Upcoming Events Section */}
           <Grid item xs={12}>
-            <Card 
-              sx={{ 
+            <Card
+              sx={{
                 mt: { xs: 4, sm: 6 },
                 background: 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
@@ -155,7 +155,7 @@ const Home = () => {
               }}
             >
               <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
-                <Typography 
+                <Typography
                   variant="h4"
                   sx={{
                     fontFamily: "'Poppins', sans-serif",
@@ -167,7 +167,7 @@ const Home = () => {
                 >
                   Upcoming Events
                 </Typography>
-                <Typography 
+                <Typography
                   variant="body1"
                   sx={{
                     fontFamily: "'Montserrat', sans-serif",
@@ -179,7 +179,7 @@ const Home = () => {
                     mx: 'auto'
                   }}
                 >
-                  Stay tuned for exciting basketball matches and championship updates. 
+                  Stay tuned for exciting basketball matches and championship updates.
                   Follow the journey of your favorite teams as they compete for glory.
                 </Typography>
               </CardContent>
