@@ -115,6 +115,20 @@ const AdminDashboard = ({ fixtures, pointsTable }) => {
     }
   };
 
+  const handleDeleteAllFixtures = async () => {
+    if (window.confirm("WARNING: This will permanently delete ALL fixtures. Are you absolutely sure?")) {
+      try {
+        for (const fixture of fixtures) {
+          await deleteDoc(doc(db, 'fixtures', fixture.id));
+        }
+        alert("All fixtures have been successfully deleted.");
+      } catch (error) {
+        console.error("Error deleting all fixtures: ", error);
+        alert("Failed to delete all fixtures");
+      }
+    }
+  };
+
   // --- Points Table Logic ---
   const handleOpenPoints = (team = null) => {
     if (team) {
@@ -180,9 +194,12 @@ const AdminDashboard = ({ fixtures, pointsTable }) => {
 
       {/* FIXTURES TAB */}
       <TabPanel value={tabIndex} index={0}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2, gap: 2 }}>
           <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenFixture()} sx={{ backgroundColor: 'black' }}>
             Add Fixture
+          </Button>
+          <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={handleDeleteAllFixtures}>
+            Delete All Fixtures
           </Button>
         </Box>
         <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
