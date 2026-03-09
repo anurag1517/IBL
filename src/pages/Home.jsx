@@ -185,26 +185,13 @@ const Home = () => {
 
           {/* Quotes Section (Cascading Marquee) */}
           <Grid item xs={12}>
-            <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <Typography variant="h4" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, color: '#ff2a2a' }}>
-
-              </Typography>
-              <Typography variant="subtitle1" sx={{ color: '#aaaaaa', fontFamily: "'Montserrat', sans-serif", mt: 1 }}>
-
-              </Typography>
-            </Box>
-
             <Box
               sx={{
                 display: 'flex',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 position: 'relative',
-                width: '100vw',
-                left: '50%',
-                right: '50%',
-                marginLeft: '-50vw',
-                marginRight: '-50vw',
+                width: '100%',
                 py: 2,
                 '&:hover .marquee-content': {
                   animationPlayState: 'paused'
