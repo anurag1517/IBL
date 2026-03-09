@@ -17,20 +17,25 @@ const Fixtures = ({ fixtures }) => {
 
   return (
     <><Box sx={{
-      p: 3,
-      m: 2,
-      backgroundColor: 'rgba(255, 255, 255, 0.8)', // More opaque background
-      backdropFilter: 'blur(10px)',
-      borderRadius: 2
+      p: { xs: 2, sm: 3, md: 4 },
+      mt: { xs: 2, sm: 4 },
+      mb: 6,
+      backgroundColor: '#000000',
+      borderRadius: '30px',
+      border: '1px solid rgba(255, 42, 42, 0.2)'
     }}>
       <Typography
         variant="h4"
         component="h2"
         gutterBottom
         sx={{
-          color: 'black',
+          color: '#ff2a2a',
           textAlign: 'center',
-          mb: 4
+          mb: 4,
+          fontWeight: 'bold',
+          fontFamily: "'Poppins', sans-serif",
+          textTransform: 'uppercase',
+          letterSpacing: '2px'
         }}
       >
         Match Fixtures
@@ -39,8 +44,9 @@ const Fixtures = ({ fixtures }) => {
       <TableContainer
         component={Paper}
         sx={{
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          backdropFilter: 'blur(5px)',
+          backgroundColor: '#0a0a0a',
+          borderRadius: '20px',
+          border: '1px solid rgba(255, 42, 42, 0.15)',
           overflowX: 'auto'
         }}
       >
@@ -48,10 +54,11 @@ const Fixtures = ({ fixtures }) => {
           <TableHead>
             <TableRow sx={{
               '& th': {
-                color: 'black',
+                color: '#ffffff',
                 fontWeight: 'bold',
                 fontSize: '1.1rem',
-                backgroundColor: 'rgba(0, 0, 0, 0.1)'
+                backgroundColor: 'rgba(255, 42, 42, 0.15)',
+                borderBottom: '2px solid #ff2a2a'
               }
             }}>
               <TableCell>Date</TableCell>
@@ -68,22 +75,30 @@ const Fixtures = ({ fixtures }) => {
               <TableRow
                 key={index}
                 sx={{
+                  transition: 'all 0.3s ease',
                   '& td': {
-                    color: 'black',
-                    borderBottom: '1px solid rgba(0, 0, 0, 0.1)'
+                    color: '#e0e0e0',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                    fontFamily: "'Montserrat', sans-serif",
                   },
                   '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.05)'
+                    backgroundColor: 'rgba(255, 42, 42, 0.1)',
+                    boxShadow: 'inset 0 0 15px rgba(255, 42, 42, 0.2)'
                   }
                 }}
               >
                 <TableCell>{match.date}</TableCell>
                 <TableCell>{match.time}</TableCell>
-                <TableCell>{match.team1}</TableCell>
-                <TableCell align="center">VS</TableCell>
-                <TableCell>{match.team2}</TableCell>
+                <TableCell sx={{ fontWeight: 600, color: '#ffffff' }}>{match.team1}</TableCell>
+                <TableCell align="center" sx={{ color: '#ff2a2a', fontWeight: 'bold' }}>VS</TableCell>
+                <TableCell sx={{ fontWeight: 600, color: '#ffffff' }}>{match.team2}</TableCell>
                 <TableCell>{match.venue}</TableCell>
-                <TableCell>{match.status}</TableCell>
+                <TableCell sx={{
+                  color: match.status === 'Completed' ? '#aaaaaa' : '#ff2a2a',
+                  fontWeight: match.status === 'Completed' ? 400 : 700
+                }}>
+                  {match.status}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

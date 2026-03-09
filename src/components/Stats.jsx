@@ -8,25 +8,27 @@ const Stats = ({ stats = [] }) => {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
         <Box sx={{
           p: { xs: 2, sm: 4 },
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: 2
+          backgroundColor: '#000000',
+          borderRadius: '30px',
+          border: '1px solid rgba(255, 42, 42, 0.2)'
         }}>
           <Typography
             variant="h4"
             sx={{
-              mb: 4,
-              color: 'black',
+              mb: 5,
+              color: '#ffffff',
               textAlign: 'center',
-              fontWeight: 'bold',
+              fontWeight: 800,
               fontFamily: "'Poppins', sans-serif",
-              fontSize: { xs: '1.8rem', sm: '2.2rem' }
+              fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem' },
+              textTransform: 'uppercase',
+              letterSpacing: '2px'
             }}
           >
-            Top Scorers
+            <span style={{ color: '#ff2a2a' }}>Top</span> Scorers
           </Typography>
 
           <Stack
@@ -58,19 +60,21 @@ const Stats = ({ stats = [] }) => {
                 sx={{
                   p: 3,
                   textAlign: 'center',
-                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                  borderRadius: 2,
+                  backgroundColor: '#0a0a0a',
+                  borderRadius: '20px',
                   width: { xs: '100%', sm: '280px' },
                   minWidth: { sm: '280px' },
-                  transition: 'transform 0.2s',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
-                    transform: 'scale(1.02)',
-                    boxShadow: '0 8px 16px rgba(0,0,0,0.1)'
+                    transform: 'translateY(-5px)',
+                    boxShadow: '0 10px 25px rgba(255, 42, 42, 0.3)',
+                    backgroundColor: 'rgba(255, 42, 42, 0.05)'
                   },
-                  border: player.rank === 1 ? '2px solid #FFD700' :
-                    player.rank === 2 ? '2px solid #C0C0C0' :
-                      player.rank === 3 ? '2px solid #CD7F32' : 'none',
-                  mb: { xs: 2, sm: 0 }
+                  border: player.rank === 1 ? '2px solid rgba(255, 215, 0, 0.8)' :
+                    player.rank === 2 ? '2px solid rgba(192, 192, 192, 0.8)' :
+                      player.rank === 3 ? '2px solid rgba(205, 127, 50, 0.8)' : '1px solid rgba(255, 42, 42, 0.2)',
+                  mb: { xs: 2, sm: 0 },
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.5)'
                 }}
               >
                 <Typography
@@ -89,10 +93,11 @@ const Stats = ({ stats = [] }) => {
                 <Typography
                   variant="h5"
                   sx={{
-                    color: 'black',
+                    color: '#ffffff',
                     mb: 1,
-                    fontWeight: 'bold',
-                    fontSize: { xs: '1.2rem', sm: '1.5rem' }
+                    fontWeight: 700,
+                    fontSize: { xs: '1.2rem', sm: '1.5rem' },
+                    fontFamily: "'Montserrat', sans-serif"
                   }}
                 >
                   {player.name}
@@ -100,9 +105,10 @@ const Stats = ({ stats = [] }) => {
                 <Typography
                   variant="subtitle1"
                   sx={{
-                    color: 'black',
+                    color: '#aaaaaa',
                     mb: 2,
-                    fontSize: { xs: '0.9rem', sm: '1rem' }
+                    fontSize: { xs: '0.9rem', sm: '1rem' },
+                    fontFamily: "'Montserrat', sans-serif"
                   }}
                 >
                   {player.team}
@@ -110,8 +116,8 @@ const Stats = ({ stats = [] }) => {
                 <Typography
                   variant="h4"
                   sx={{
-                    color: 'black',
-                    fontWeight: 'bold',
+                    color: '#ff2a2a',
+                    fontWeight: 800,
                     fontSize: { xs: '1.8rem', sm: '2rem' }
                   }}
                 >
@@ -120,7 +126,7 @@ const Stats = ({ stats = [] }) => {
                     component="span"
                     variant="h6"
                     sx={{
-                      color: 'black',
+                      color: '#aaaaaa',
                       ml: 1,
                       fontSize: { xs: '1rem', sm: '1.2rem' }
                     }}

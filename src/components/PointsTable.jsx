@@ -45,15 +45,17 @@ const PointsTable = ({ pointsTable }) => {
   const poolBTeams = sortTeams(teamStandings.filter(team => team.pool === 'B'));
 
   const renderTable = (teams, poolName) => (
-    <Box sx={{ mb: 4 }}>
+    <Box sx={{ mb: 6 }}>
       <Typography
-        variant="h5"
+        variant="h4"
         sx={{
-          color: 'black',
+          color: '#ff2a2a',
           textAlign: 'center',
-          mb: 2,
-          fontWeight: 'bold',
+          mb: 3,
+          fontWeight: 800,
           fontFamily: "'Poppins', sans-serif",
+          textTransform: 'uppercase',
+          letterSpacing: '1px'
         }}
       >
         Pool {poolName}
@@ -61,22 +63,24 @@ const PointsTable = ({ pointsTable }) => {
       <TableContainer
         component={Paper}
         sx={{
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          borderRadius: 2,
-          overflow: 'auto' // Enable horizontal scroll for mobile
+          backgroundColor: '#0a0a0a',
+          borderRadius: '20px',
+          border: '1px solid rgba(255, 42, 42, 0.15)',
+          overflow: 'auto'
         }}
       >
         <Table>
           <TableHead>
             <TableRow sx={{
               '& th': {
-                color: 'black',
+                color: '#ffffff',
                 fontWeight: 'bold',
                 fontSize: { xs: '0.875rem', sm: '1rem' },
-                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                backgroundColor: 'rgba(255, 42, 42, 0.15)',
+                borderBottom: '2px solid #ff2a2a',
                 fontFamily: "'Montserrat', sans-serif",
-                whiteSpace: 'nowrap', // Prevent text wrapping
-                padding: { xs: '8px', sm: '16px' },
+                whiteSpace: 'nowrap',
+                padding: { xs: '12px', sm: '16px' },
               }
             }}>
               <TableCell>Position</TableCell>
@@ -97,16 +101,17 @@ const PointsTable = ({ pointsTable }) => {
               <TableRow
                 key={team.team}
                 sx={{
+                  transition: 'all 0.3s ease',
                   '& td': {
-                    color: 'black',
-                    borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+                    color: '#e0e0e0',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
                     fontFamily: "'Montserrat', sans-serif",
                     fontSize: { xs: '0.875rem', sm: '1rem' },
-                    padding: { xs: '8px', sm: '16px' },
+                    padding: { xs: '12px', sm: '16px' },
                   },
                   '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                    transition: 'background-color 0.3s ease'
+                    backgroundColor: 'rgba(255, 42, 42, 0.1)',
+                    boxShadow: 'inset 0 0 15px rgba(255, 42, 42, 0.2)'
                   },
                   backgroundColor: index === 0
                     ? 'rgba(255, 215, 0, 0.05)'
@@ -116,7 +121,7 @@ const PointsTable = ({ pointsTable }) => {
                 }}
               >
                 <TableCell>{index + 1}</TableCell>
-                <TableCell sx={{ fontWeight: index < 2 ? 600 : 400 }}>
+                <TableCell sx={{ fontWeight: index < 2 ? 600 : 400, color: '#ffffff' }}>
                   {team.team}
                 </TableCell>
                 <TableCell align="center">{team.played}</TableCell>
@@ -126,7 +131,7 @@ const PointsTable = ({ pointsTable }) => {
                   align="center"
                   sx={{
                     fontWeight: 'bold',
-                    color: index === 0 ? '#FFD700' : index === 1 ? '#C0C0C0' : 'inherit'
+                    color: index === 0 ? '#FFD700' : index === 1 ? '#C0C0C0' : '#ff2a2a'
                   }}
                 >
                   {team.points}
@@ -134,8 +139,8 @@ const PointsTable = ({ pointsTable }) => {
                 <TableCell
                   align="center"
                   sx={{
-                    color: team.pointDiff > 0 ? 'green' : team.pointDiff < 0 ? 'red' : 'inherit',
-                    fontWeight: 500
+                    color: team.pointDiff > 0 ? '#4caf50' : team.pointDiff < 0 ? '#ff2a2a' : '#aaaaaa',
+                    fontWeight: 600
                   }}
                 >
                   {team.pointDiff > 0 ? `+${team.pointDiff}` : team.pointDiff}
@@ -150,25 +155,27 @@ const PointsTable = ({ pointsTable }) => {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
         <Box sx={{
-          p: { xs: 2, sm: 3, md: 4 },
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: 2
+          p: { xs: 2, sm: 4 },
+          backgroundColor: '#000000',
+          borderRadius: '30px',
+          border: '1px solid rgba(255, 42, 42, 0.2)'
         }}>
           <Typography
-            variant="h4"
+            variant="h3"
             sx={{
-              color: 'black',
+              color: '#ffffff',
               textAlign: 'center',
-              mb: 4,
-              fontWeight: 'bold',
+              mb: 5,
+              fontWeight: 800,
               fontFamily: "'Poppins', sans-serif",
-              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }
+              fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem' },
+              textTransform: 'uppercase',
+              letterSpacing: '2px'
             }}
           >
-            Points Table
+            <span style={{ color: '#ff2a2a' }}>Points</span> Table
           </Typography>
           {renderTable(poolATeams, 'A')}
           {renderTable(poolBTeams, 'B')}
