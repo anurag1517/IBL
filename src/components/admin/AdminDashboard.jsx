@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import { db } from '../../firebase';
 import { doc, setDoc, deleteDoc } from 'firebase/firestore';
-import { initialTeamStandingsWithIds } from '../../data/initialData';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -147,13 +147,15 @@ const AdminDashboard = ({ fixtures, pointsTable }) => {
   const handleResetPoints = async () => {
     if (window.confirm("WARNING: This will reset ALL teams to 0 points. Are you absolutely sure?")) {
       try {
-        // Delete existing
         for (const team of pointsTable) {
-          await deleteDoc(doc(db, 'pointsTable', team.id));
-        }
-        // Insert empty records
-        for (const team of initialTeamStandingsWithIds) {
-          await setDoc(doc(db, 'pointsTable', team.id), team);
+          await setDoc(doc(db, 'pointsTable', team.id), {
+            ...team,
+            played: 0,
+            won: 0,
+            lost: 0,
+            points: 0,
+            pointDiff: 0
+          });
         }
         alert("Points have been successfully reset to 0.");
       } catch (error) {

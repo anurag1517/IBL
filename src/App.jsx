@@ -13,7 +13,7 @@ import { Box, CircularProgress } from '@mui/material';
 import basketBg from './assets/images/basket.jpg';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
-import { initialFixturesWithIds, initialTeamStandingsWithIds } from './data/initialData';
+
 import { db } from './firebase';
 import { collection, onSnapshot, doc, setDoc, getDocs } from 'firebase/firestore';
 
@@ -23,36 +23,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initializeDataIfEmpty = async () => {
-      try {
-        const initDocRef = doc(db, 'config', 'init');
-        const initDocSnap = await getDocs(collection(db, 'config'));
 
-        let isInitialized = false;
-        initDocSnap.forEach((doc) => {
-          if (doc.id === 'init') isInitialized = true;
-        });
-
-        if (!isInitialized) {
-          console.log("First time setup: Initializing Firestore...");
-
-          // Mark as initialized first to prevent race conditions
-          await setDoc(initDocRef, { initialized: true, timestamp: new Date() });
-
-          for (const fixture of initialFixturesWithIds) {
-            await setDoc(doc(db, 'fixtures', fixture.id), fixture);
-          }
-
-          for (const team of initialTeamStandingsWithIds) {
-            await setDoc(doc(db, 'pointsTable', team.id), team);
-          }
-        }
-      } catch (error) {
-        console.error("Error checking initialization status:", error);
-      }
-    };
-
-    initializeDataIfEmpty();
 
     // Listen to fixtures
     const unsubscribeFixtures = onSnapshot(collection(db, 'fixtures'), (snapshot) => {
