@@ -45,7 +45,7 @@ const Navbar = () => {
         <Typography
           variant="h6"
           sx={{
-            color: 'black',
+            color: '#ffffff',
             fontWeight: 'bold',
             fontFamily: "'Poppins', sans-serif",
           }}
@@ -67,7 +67,7 @@ const Navbar = () => {
           <ListItemText
             primary={item.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
             sx={{
-              color: 'black',
+              color: '#ffffff',
               '& .MuiTypography-root': {
                 fontFamily: "'Montserrat', sans-serif",
                 fontWeight: 500
@@ -105,15 +105,16 @@ const Navbar = () => {
             to="/"
             sx={{
               textDecoration: 'none',
-              color: 'black',
+              color: '#ffffff',
               fontWeight: 'bold',
               padding: '8px 16px',
-              borderRadius: '4px',
+              borderRadius: '30px',
               fontFamily: "'Poppins', sans-serif",
               transition: 'all 0.3s ease',
               '&:hover': {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                color: 'white'
+                backgroundColor: 'rgba(255, 42, 42, 0.15)',
+                color: '#ff2a2a',
+                boxShadow: '0 0 15px rgba(255, 42, 42, 0.3)'
               }
             }}
           >
@@ -129,8 +130,11 @@ const Navbar = () => {
             edge="start"
             onClick={handleDrawerToggle}
             sx={{
-              color: 'black',
-              '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.08)' }
+              color: '#ffffff',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 42, 42, 0.15)',
+                color: '#ff2a2a'
+              }
             }}
           >
             <MenuIcon />
@@ -150,17 +154,17 @@ const Navbar = () => {
                 component={RouterLink}
                 to={`/${item}`}
                 sx={{
-                  color: 'black',
-                  borderBottom: isActiveRoute(`/${item}`) ? '2px solid black' : 'none',
+                  color: isActiveRoute(`/${item}`) ? '#ff2a2a' : '#ffffff',
+                  borderBottom: isActiveRoute(`/${item}`) ? '2px solid #ff2a2a' : 'none',
                   borderRadius: '4px',
                   padding: '8px 16px',
                   fontSize: { sm: '0.85rem', md: '0.9rem', lg: '1rem' },
                   whiteSpace: 'nowrap',
                   transition: 'all 0.3s ease',
                   '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    color: 'white',
-                    borderBottom: 'none'
+                    backgroundColor: 'rgba(255, 42, 42, 0.1)',
+                    color: '#ff2a2a',
+                    borderBottom: '2px solid #ff2a2a'
                   }
                 }}
               >
@@ -184,8 +188,9 @@ const Navbar = () => {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: 240,
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)'
+              backgroundColor: '#0a0a0a',
+              borderLeft: '1px solid rgba(255, 42, 42, 0.2)',
+              color: '#ffffff'
             },
           }}
         >

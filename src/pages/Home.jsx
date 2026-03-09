@@ -231,10 +231,10 @@ const Home = () => {
           <Grid item xs={12}>
             <Box sx={{ textAlign: 'center', mb: 3 }}>
               <Typography variant="h4" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, color: '#ff2a2a' }}>
-                Words of Wisdom
+
               </Typography>
               <Typography variant="subtitle1" sx={{ color: '#aaaaaa', fontFamily: "'Montserrat', sans-serif", mt: 1 }}>
-                Motivation from the legends of the game
+
               </Typography>
             </Box>
 
