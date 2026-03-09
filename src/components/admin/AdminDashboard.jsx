@@ -7,6 +7,9 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import { db } from '../../firebase';
+import { doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { initialTeamStandingsWithIds } from '../../data/initialData';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
