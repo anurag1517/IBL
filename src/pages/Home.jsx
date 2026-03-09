@@ -183,50 +183,6 @@ const Home = () => {
             </Box>
           </Grid>
 
-          {/* Quick Navigation Hub */}
-          <Grid item xs={12}>
-            <Grid container spacing={3} sx={{ mb: { xs: 4, sm: 6 } }}>
-              {[
-                { title: 'Teams', icon: <GroupsIcon fontSize="large" />, path: '/teams', desc: 'Meet the squads' },
-                { title: 'Stats', icon: <TimelineIcon fontSize="large" />, path: '/stats', desc: 'Top performers' },
-                { title: 'Gallery', icon: <PhotoLibraryIcon fontSize="large" />, path: '/gallery', desc: 'Action shots' },
-                { title: 'Archives', icon: <EmojiEventsIcon fontSize="large" />, path: '/archives', desc: 'Hall of Fame' }
-              ].map((item, idx) => (
-                <Grid item xs={12} sm={6} md={3} key={idx}>
-                  <Card
-                    onClick={() => navigate(item.path)}
-                    sx={{
-                      cursor: 'pointer',
-                      height: '100%',
-                      background: 'rgba(25, 25, 25, 0.9)',
-                      border: '1px solid rgba(255, 42, 42, 0.2)',
-                      borderRadius: '30px',
-                      textAlign: 'center',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        transform: 'translateY(-10px)',
-                        boxShadow: '0 0 25px rgba(255, 42, 42, 0.4)',
-                        border: '1px solid rgba(255, 42, 42, 0.8)',
-                        background: 'linear-gradient(135deg, rgba(40,40,40,0.9) 0%, rgba(20,20,20,0.9) 100%)',
-                      }
-                    }}
-                  >
-                    <CardContent sx={{ p: 4 }}>
-                      <Box sx={{ color: '#ff2a2a', mb: 2 }}>{item.icon}</Box>
-                      <Typography variant="h6" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, mb: 1, color: '#ffffff' }}>
-                        {item.title}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#aaaaaa', fontFamily: "'Montserrat', sans-serif" }}>
-                        {item.desc}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-            <Divider sx={{ my: 4, borderColor: 'rgba(255,255,255,0.1)' }} />
-          </Grid>
-
           {/* Quotes Section (Cascading Marquee) */}
           <Grid item xs={12}>
             <Box sx={{ textAlign: 'center', mb: 3 }}>
