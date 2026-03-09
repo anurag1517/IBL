@@ -273,6 +273,8 @@ const Home = () => {
             <Card
               sx={{
                 mt: { xs: 4, sm: 6 },
+                mx: 'auto',
+                maxWidth: '900px',
                 background: 'linear-gradient(45deg, #1a0000, #400000)',
                 border: '1px solid rgba(255, 42, 42, 0.3)',
                 borderRadius: '30px',
