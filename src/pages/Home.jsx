@@ -219,6 +219,11 @@ const Home = () => {
 
           {/* Quotes Section (Cascading Marquee) */}
           <Grid item xs={12}>
+            <Box sx={{ textAlign: 'center', mb: 3 }}>
+              <Typography variant="h4" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, color: '#1a1a1a' }}>
+              </Typography>
+            </Box>
+
             <Box
               sx={{
                 display: 'flex',
