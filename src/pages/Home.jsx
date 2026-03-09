@@ -65,7 +65,9 @@ const Home = () => {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        overflowX: 'hidden'
+        overflowX: 'hidden',
+        bgcolor: '#000000', // True Black background
+        color: '#ffffff', // Stark white base text
       }}
     >
       <style>
@@ -97,9 +99,7 @@ const Home = () => {
                 textAlign: 'center',
                 mb: { xs: 4, sm: 6, md: 8 },
                 p: { xs: 3, sm: 4, md: 5 },
-                background: 'rgba(255, 255, 255, 0.9)',
-                borderRadius: 4,
-                backdropFilter: 'blur(10px)',
+                background: 'transparent',
               }}
             >
               <Typography
@@ -140,14 +140,18 @@ const Home = () => {
                   size="large"
                   onClick={() => navigate('/fixtures')}
                   sx={{
-                    backgroundColor: '#1a1a1a',
+                    backgroundColor: '#ff2a2a',
                     color: 'white',
                     px: 4,
                     py: 1.5,
                     borderRadius: '30px',
                     fontWeight: 'bold',
-                    '&:hover': { backgroundColor: '#333', transform: 'scale(1.05)' },
-                    transition: 'all 0.2s'
+                    '&:hover': {
+                      backgroundColor: '#cc0000',
+                      transform: 'scale(1.05)',
+                      boxShadow: '0 0 20px rgba(255, 42, 42, 0.6)'
+                    },
+                    transition: 'all 0.3s'
                   }}
                 >
                   View Fixtures
@@ -157,15 +161,20 @@ const Home = () => {
                   size="large"
                   onClick={() => navigate('/points-table')}
                   sx={{
-                    borderColor: '#1a1a1a',
-                    color: '#1a1a1a',
+                    borderColor: '#ff2a2a',
+                    color: '#ff2a2a',
                     px: 4,
                     py: 1.5,
                     borderRadius: '30px',
                     fontWeight: 'bold',
                     borderWidth: '2px',
-                    '&:hover': { backgroundColor: 'rgba(0,0,0,0.05)', borderWidth: '2px', transform: 'scale(1.05)' },
-                    transition: 'all 0.2s'
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 42, 42, 0.1)',
+                      borderWidth: '2px',
+                      transform: 'scale(1.05)',
+                      boxShadow: '0 0 15px rgba(255, 42, 42, 0.3)'
+                    },
+                    transition: 'all 0.3s'
                   }}
                 >
                   Standings
@@ -189,24 +198,25 @@ const Home = () => {
                     sx={{
                       cursor: 'pointer',
                       height: '100%',
-                      background: 'rgba(255, 255, 255, 0.9)',
-                      backdropFilter: 'blur(10px)',
-                      borderRadius: 4,
+                      background: 'rgba(25, 25, 25, 0.9)',
+                      border: '1px solid rgba(255, 42, 42, 0.2)',
+                      borderRadius: '30px',
                       textAlign: 'center',
                       transition: 'all 0.3s ease',
                       '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: '0 12px 24px rgba(0,0,0,0.15)',
-                        background: 'linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(240,240,240,1) 100%)',
+                        transform: 'translateY(-10px)',
+                        boxShadow: '0 0 25px rgba(255, 42, 42, 0.4)',
+                        border: '1px solid rgba(255, 42, 42, 0.8)',
+                        background: 'linear-gradient(135deg, rgba(40,40,40,0.9) 0%, rgba(20,20,20,0.9) 100%)',
                       }
                     }}
                   >
                     <CardContent sx={{ p: 4 }}>
-                      <Box sx={{ color: '#1a1a1a', mb: 2 }}>{item.icon}</Box>
-                      <Typography variant="h6" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, mb: 1 }}>
+                      <Box sx={{ color: '#ff2a2a', mb: 2 }}>{item.icon}</Box>
+                      <Typography variant="h6" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, mb: 1, color: '#ffffff' }}>
                         {item.title}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: '#666', fontFamily: "'Montserrat', sans-serif" }}>
+                      <Typography variant="body2" sx={{ color: '#aaaaaa', fontFamily: "'Montserrat', sans-serif" }}>
                         {item.desc}
                       </Typography>
                     </CardContent>
@@ -214,13 +224,17 @@ const Home = () => {
                 </Grid>
               ))}
             </Grid>
-            <Divider sx={{ my: 4, opacity: 0.6 }} />
+            <Divider sx={{ my: 4, borderColor: 'rgba(255,255,255,0.1)' }} />
           </Grid>
 
           {/* Quotes Section (Cascading Marquee) */}
           <Grid item xs={12}>
             <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <Typography variant="h4" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, color: '#1a1a1a' }}>
+              <Typography variant="h4" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, color: '#ff2a2a' }}>
+                Words of Wisdom
+              </Typography>
+              <Typography variant="subtitle1" sx={{ color: '#aaaaaa', fontFamily: "'Montserrat', sans-serif", mt: 1 }}>
+                Motivation from the legends of the game
               </Typography>
             </Box>
 
@@ -258,20 +272,21 @@ const Home = () => {
                       flexShrink: 0,
                       display: 'flex',
                       flexDirection: 'column',
-                      background: 'rgba(255, 255, 255, 0.9)',
-                      backdropFilter: 'blur(10px)',
-                      borderRadius: 4,
+                      background: 'rgba(20, 20, 20, 1)',
+                      border: '1px solid rgba(255, 42, 42, 0.15)',
+                      borderRadius: '30px',
                       whiteSpace: 'normal',
                       transition: 'all 0.3s ease',
                       '&:hover': {
-                        transform: 'translateY(-8px) scale(1.02)',
-                        boxShadow: '0 12px 24px rgba(0,0,0,0.15)',
+                        transform: 'scale(1.05)',
+                        boxShadow: '0 0 30px rgba(255, 42, 42, 0.5)',
+                        border: '1px solid rgba(255, 42, 42, 0.8)',
                         zIndex: 10
                       }
                     }}
                   >
                     <CardContent sx={{
-                      p: { xs: 2.5, sm: 3 },
+                      p: { xs: 2.5, sm: 4 },
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
@@ -284,7 +299,7 @@ const Home = () => {
                           fontFamily: "'Playfair Display', serif",
                           fontSize: { xs: '1.1rem', sm: '1.2rem', md: '1.4rem' },
                           fontStyle: 'italic',
-                          color: '#1a1a1a',
+                          color: '#ffffff',
                           lineHeight: 1.5,
                           fontWeight: 400
                         }}
@@ -297,7 +312,7 @@ const Home = () => {
                           fontFamily: "'Montserrat', sans-serif",
                           fontWeight: 600,
                           textAlign: 'right',
-                          color: '#4a4a4a',
+                          color: '#ff2a2a',
                           fontSize: { xs: '0.9rem', sm: '1rem' }
                         }}
                       >
@@ -315,27 +330,29 @@ const Home = () => {
             <Card
               sx={{
                 mt: { xs: 4, sm: 6 },
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: 4,
+                background: 'linear-gradient(45deg, #1a0000, #400000)',
+                border: '1px solid rgba(255, 42, 42, 0.3)',
+                borderRadius: '30px',
                 animation: 'subtlePulse 4s ease-in-out infinite',
                 transition: 'all 0.3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
                   animationPlayState: 'paused',
-                  boxShadow: '0 12px 24px rgba(0,0,0,0.15)'
+                  boxShadow: '0 0 40px rgba(255, 42, 42, 0.5)'
                 }
               }}
             >
-              <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+              <CardContent sx={{ p: { xs: 4, sm: 6 } }}>
                 <Typography
                   variant="h4"
                   sx={{
                     fontFamily: "'Poppins', sans-serif",
-                    fontWeight: 600,
+                    fontWeight: 800,
                     mb: 3,
-                    color: '#1a1a1a',
-                    textAlign: 'center'
+                    color: '#ffffff',
+                    textAlign: 'center',
+                    textTransform: 'uppercase',
+                    letterSpacing: '2px'
                   }}
                 >
                   Upcoming Events
@@ -346,7 +363,7 @@ const Home = () => {
                     fontFamily: "'Montserrat', sans-serif",
                     fontSize: { xs: '1.1rem', sm: '1.2rem' },
                     lineHeight: 1.8,
-                    color: '#4a4a4a',
+                    color: '#e0e0e0',
                     textAlign: 'center',
                     maxWidth: '800px',
                     mx: 'auto'
@@ -360,7 +377,20 @@ const Home = () => {
                   <Button
                     variant="contained"
                     onClick={() => navigate('/fixtures')}
-                    sx={{ backgroundColor: '#1a1a1a', borderRadius: '20px', px: 3 }}
+                    sx={{
+                      backgroundColor: '#ff2a2a',
+                      color: 'white',
+                      borderRadius: '30px',
+                      px: 5,
+                      py: 1.5,
+                      fontWeight: 'bold',
+                      fontSize: '1.1rem',
+                      textTransform: 'none',
+                      '&:hover': {
+                        backgroundColor: '#cc0000',
+                        boxShadow: '0 0 15px rgba(255, 42, 42, 0.6)'
+                      }
+                    }}
                   >
                     See Schedule
                   </Button>
