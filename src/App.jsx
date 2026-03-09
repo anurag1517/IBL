@@ -7,7 +7,7 @@ import PointsTable from './components/PointsTable';
 import Stats from './components/Stats';
 import Teams from './components/Teams';
 import Archives from './components/Archives';
-//import Gallery from './components/Gallery';
+import Gallery from './components/Gallery';
 import AdminDashboard from './components/admin/AdminDashboard';
 import { Box, CircularProgress } from '@mui/material';
 import basketBg from './assets/images/basket.jpg';
@@ -20,6 +20,8 @@ import { collection, onSnapshot, doc, setDoc, getDocs } from 'firebase/firestore
 const App = () => {
   const [fixtures, setFixtures] = useState([]);
   const [pointsTable, setPointsTable] = useState([]);
+  const [stats, setStats] = useState([]);
+  const [gallery, setGallery] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,12 +38,34 @@ const App = () => {
     const unsubscribePoints = onSnapshot(collection(db, 'pointsTable'), (snapshot) => {
       const pointsData = snapshot.docs.map(doc => doc.data());
       setPointsTable(pointsData);
+    });
+
+    // Listen to stats
+    const unsubscribeStats = onSnapshot(collection(db, 'stats'), (snapshot) => {
+      const statsData = snapshot.docs.map(doc => doc.data());
+      // Sort by score descending, then assign ranks
+      statsData.sort((a, b) => b.score - a.score);
+      statsData.forEach((player, index) => {
+        player.rank = index + 1;
+      });
+      setStats(statsData);
+    });
+
+    // Listen to gallery
+    const unsubscribeGallery = onSnapshot(collection(db, 'gallery'), (snapshot) => {
+      const galleryData = {};
+      snapshot.docs.forEach(doc => {
+        galleryData[doc.id] = doc.data().images || [];
+      });
+      setGallery(galleryData);
       setLoading(false);
     });
 
     return () => {
       unsubscribeFixtures();
       unsubscribePoints();
+      unsubscribeStats();
+      unsubscribeGallery();
     };
   }, []);
 
@@ -87,15 +111,17 @@ const App = () => {
               <Route path="/fixtures" element={<Fixtures fixtures={fixtures} />} />
               <Route path="/teams" element={<Teams />} />
               <Route path="/points-table" element={<PointsTable pointsTable={pointsTable} />} />
-              <Route path="/stats" element={<Stats />} />
+              <Route path="/stats" element={<Stats stats={stats} />} />
               <Route path="/archives" element={<Archives />} />
-              {/* <Route path="/gallery" element={<Gallery />} /> */}
+              <Route path="/gallery" element={<Gallery galleryData={gallery} />} />
               <Route path="/admin" element={
                 <AdminDashboard
                   fixtures={fixtures}
                   setFixtures={setFixtures}
                   pointsTable={pointsTable}
                   setPointsTable={setPointsTable}
+                  stats={stats}
+                  galleryData={gallery}
                 />
               } />
             </Routes>

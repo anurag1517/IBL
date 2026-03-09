@@ -30,7 +30,7 @@ const Navbar = () => {
     return location.pathname === path;
   };
 
-  const navItems = ['fixtures', 'teams', 'points-table', 'stats', 'archives'];
+  const navItems = ['fixtures', 'teams', 'points-table', 'stats', 'gallery', 'archives'];
 
   const drawer = (
     <List>

@@ -1,42 +1,19 @@
 import React, { useState } from 'react';
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Grid, 
-  MenuItem, 
-  Select, 
-  FormControl, 
-  ImageList, 
-  ImageListItem 
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  MenuItem,
+  Select,
+  FormControl,
+  ImageList,
+  ImageListItem
 } from '@mui/material';
 import Footer from './Footer';
 
-const Gallery = () => {
+const Gallery = ({ galleryData = {} }) => {
   const [selectedYear, setSelectedYear] = useState('2025');
-
-  const galleryData = {
-    '2022': [
-      { img: 'url_to_image1', title: 'Match 1 2022' },
-      { img: 'url_to_image2', title: 'Match 2 2022' },
-      // Add more images
-    ],
-    '2023': [
-      { img: 'url_to_image3', title: 'Match 1 2023' },
-      { img: 'url_to_image4', title: 'Match 2 2023' },
-      // Add more images
-    ],
-    '2024': [
-      { img: 'url_to_image5', title: 'Match 1 2024' },
-      { img: 'url_to_image6', title: 'Match 2 2024' },
-      // Add more images
-    ],
-    '2025': [
-      { img: 'url_to_image7', title: 'Match 1 2025' },
-      { img: 'url_to_image8', title: 'Match 2 2025' },
-      // Add more images
-    ]
-  };
 
   return (
     <>
@@ -47,11 +24,11 @@ const Gallery = () => {
           backdropFilter: 'blur(10px)',
           borderRadius: 2
         }}>
-          <Typography 
-            variant="h3" 
-            sx={{ 
-              mb: 4, 
-              color: 'black', 
+          <Typography
+            variant="h3"
+            sx={{
+              mb: 4,
+              color: 'black',
               textAlign: 'center',
               fontWeight: 'bold',
               fontFamily: "'Poppins', sans-serif",
@@ -77,17 +54,17 @@ const Gallery = () => {
             </Select>
           </FormControl>
 
-          <ImageList 
-            sx={{ 
-              width: '100%', 
+          <ImageList
+            sx={{
+              width: '100%',
               height: 'auto',
               gap: 16
-            }} 
+            }}
             cols={3}
             rowHeight={264}
           >
-            {galleryData[selectedYear].map((item, index) => (
-              <ImageListItem 
+            {(galleryData[selectedYear] || []).map((item, index) => (
+              <ImageListItem
                 key={index}
                 sx={{
                   '&:hover': {
@@ -97,8 +74,8 @@ const Gallery = () => {
                 }}
               >
                 <img
-                  src={item.img}
-                  alt={item.title}
+                  src={item}
+                  alt={`IBL ${selectedYear} highlight`}
                   loading="lazy"
                   style={{
                     borderRadius: 8,

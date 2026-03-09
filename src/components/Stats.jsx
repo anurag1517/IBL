@@ -2,41 +2,9 @@ import React from 'react';
 import { Box, Container, Typography, Paper, Stack, useTheme, useMediaQuery } from '@mui/material';
 import Footer from './Footer';
 
-const Stats = () => {
+const Stats = ({ stats = [] }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const topPlayers = [
-    {
-      rank: 1,
-      name: "R Nagasurya",
-      team: "Skull Scorchers",
-      score: 39
-    },
-    {
-      rank: 2,
-      name: "Vishnu",
-      team: "The Real Slim Shady's",
-      score: 37
-    },
-    {
-      rank: 3,
-      name: "Pranjal E.Subba",
-      team: "Small Bois Squad",
-      score: 29
-    },
-    {
-      rank: 4,
-      name: "Anurag Kumar",
-      team: "The Real Slim Shady's",
-      score: 24
-    },
-    {
-      rank: 5,
-      name: "M. Jayant Kumar",
-      team: "Beast Bulls",
-      score: 18
-    }
-  ];
 
   return (
     <>
@@ -47,11 +15,11 @@ const Stats = () => {
           backdropFilter: 'blur(10px)',
           borderRadius: 2
         }}>
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              mb: 4, 
-              color: 'black', 
+          <Typography
+            variant="h4"
+            sx={{
+              mb: 4,
+              color: 'black',
               textAlign: 'center',
               fontWeight: 'bold',
               fontFamily: "'Poppins', sans-serif",
@@ -61,10 +29,10 @@ const Stats = () => {
             Top Scorers
           </Typography>
 
-          <Stack 
+          <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={3}
-            sx={{ 
+            sx={{
               pb: 2,
               overflowX: { sm: 'auto' },
               '&::-webkit-scrollbar': {
@@ -83,9 +51,9 @@ const Stats = () => {
               }
             }}
           >
-            {topPlayers.map((player) => (
-              <Paper 
-                key={player.rank}
+            {stats.map((player) => (
+              <Paper
+                key={player.id || player.name}
                 elevation={3}
                 sx={{
                   p: 3,
@@ -99,18 +67,18 @@ const Stats = () => {
                     transform: 'scale(1.02)',
                     boxShadow: '0 8px 16px rgba(0,0,0,0.1)'
                   },
-                  border: player.rank === 1 ? '2px solid #FFD700' : 
-                         player.rank === 2 ? '2px solid #C0C0C0' :
-                         player.rank === 3 ? '2px solid #CD7F32' : 'none',
+                  border: player.rank === 1 ? '2px solid #FFD700' :
+                    player.rank === 2 ? '2px solid #C0C0C0' :
+                      player.rank === 3 ? '2px solid #CD7F32' : 'none',
                   mb: { xs: 2, sm: 0 }
                 }}
               >
-                <Typography 
-                  variant="h2" 
-                  sx={{ 
-                    color: player.rank === 1 ? '#FFD700' : 
-                           player.rank === 2 ? '#C0C0C0' :
-                           player.rank === 3 ? '#CD7F32' : 'black',
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: player.rank === 1 ? '#FFD700' :
+                      player.rank === 2 ? '#C0C0C0' :
+                        player.rank === 3 ? '#CD7F32' : 'black',
                     mb: 2,
                     fontWeight: 'bold',
                     fontSize: { xs: '2.5rem', sm: '3rem' }
@@ -118,9 +86,9 @@ const Stats = () => {
                 >
                   {player.rank}
                 </Typography>
-                <Typography 
-                  variant="h5" 
-                  sx={{ 
+                <Typography
+                  variant="h5"
+                  sx={{
                     color: 'black',
                     mb: 1,
                     fontWeight: 'bold',
@@ -129,9 +97,9 @@ const Stats = () => {
                 >
                   {player.name}
                 </Typography>
-                <Typography 
-                  variant="subtitle1" 
-                  sx={{ 
+                <Typography
+                  variant="subtitle1"
+                  sx={{
                     color: 'black',
                     mb: 2,
                     fontSize: { xs: '0.9rem', sm: '1rem' }
@@ -139,19 +107,19 @@ const Stats = () => {
                 >
                   {player.team}
                 </Typography>
-                <Typography 
-                  variant="h4" 
-                  sx={{ 
+                <Typography
+                  variant="h4"
+                  sx={{
                     color: 'black',
                     fontWeight: 'bold',
                     fontSize: { xs: '1.8rem', sm: '2rem' }
                   }}
                 >
                   {player.score}
-                  <Typography 
-                    component="span" 
-                    variant="h6" 
-                    sx={{ 
+                  <Typography
+                    component="span"
+                    variant="h6"
+                    sx={{
                       color: 'black',
                       ml: 1,
                       fontSize: { xs: '1rem', sm: '1.2rem' }
