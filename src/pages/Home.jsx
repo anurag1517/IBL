@@ -1,8 +1,15 @@
 import React from 'react';
-import { Box, Container, Typography, Grid, Card, CardContent } from '@mui/material';
+import { Box, Container, Typography, Grid, Card, CardContent, Button, Divider } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import GroupsIcon from '@mui/icons-material/Groups';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+import TimelineIcon from '@mui/icons-material/Timeline';
 import Footer from '../components/Footer';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const quotes = [
     {
       text: "Everything negative – pressure, challenges – is all an opportunity for me to rise.",
@@ -18,7 +25,7 @@ const Home = () => {
     },
     {
       text: "You miss 100% of the shots you don't take.",
-      author: "Wayne Gretzky / Michael Scott"
+      author: "Michael Scott"
     },
     {
       text: "The strength of the team is each individual member. The strength of each member is the team.",
@@ -126,11 +133,101 @@ const Home = () => {
               >
                 Experience the thrill of basketball at IIEST premier league
               </Typography>
+
+              <Box sx={{ mt: 4, display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={() => navigate('/fixtures')}
+                  sx={{
+                    backgroundColor: '#1a1a1a',
+                    color: 'white',
+                    px: 4,
+                    py: 1.5,
+                    borderRadius: '30px',
+                    fontWeight: 'bold',
+                    '&:hover': { backgroundColor: '#333', transform: 'scale(1.05)' },
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  View Fixtures
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={() => navigate('/points-table')}
+                  sx={{
+                    borderColor: '#1a1a1a',
+                    color: '#1a1a1a',
+                    px: 4,
+                    py: 1.5,
+                    borderRadius: '30px',
+                    fontWeight: 'bold',
+                    borderWidth: '2px',
+                    '&:hover': { backgroundColor: 'rgba(0,0,0,0.05)', borderWidth: '2px', transform: 'scale(1.05)' },
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  Standings
+                </Button>
+              </Box>
             </Box>
+          </Grid>
+
+          {/* Quick Navigation Hub */}
+          <Grid item xs={12}>
+            <Grid container spacing={3} sx={{ mb: { xs: 4, sm: 6 } }}>
+              {[
+                { title: 'Teams', icon: <GroupsIcon fontSize="large" />, path: '/teams', desc: 'Meet the squads' },
+                { title: 'Stats', icon: <TimelineIcon fontSize="large" />, path: '/stats', desc: 'Top performers' },
+                { title: 'Gallery', icon: <PhotoLibraryIcon fontSize="large" />, path: '/gallery', desc: 'Action shots' },
+                { title: 'Archives', icon: <EmojiEventsIcon fontSize="large" />, path: '/archives', desc: 'Hall of Fame' }
+              ].map((item, idx) => (
+                <Grid item xs={12} sm={6} md={3} key={idx}>
+                  <Card
+                    onClick={() => navigate(item.path)}
+                    sx={{
+                      cursor: 'pointer',
+                      height: '100%',
+                      background: 'rgba(255, 255, 255, 0.9)',
+                      backdropFilter: 'blur(10px)',
+                      borderRadius: 4,
+                      textAlign: 'center',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: '0 12px 24px rgba(0,0,0,0.15)',
+                        background: 'linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(240,240,240,1) 100%)',
+                      }
+                    }}
+                  >
+                    <CardContent sx={{ p: 4 }}>
+                      <Box sx={{ color: '#1a1a1a', mb: 2 }}>{item.icon}</Box>
+                      <Typography variant="h6" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, mb: 1 }}>
+                        {item.title}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#666', fontFamily: "'Montserrat', sans-serif" }}>
+                        {item.desc}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+            <Divider sx={{ my: 4, opacity: 0.6 }} />
           </Grid>
 
           {/* Quotes Section (Cascading Marquee) */}
           <Grid item xs={12}>
+            <Box sx={{ textAlign: 'center', mb: 3 }}>
+              <Typography variant="h4" sx={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, color: '#1a1a1a' }}>
+                Words of Wisdom
+              </Typography>
+              <Typography variant="subtitle1" sx={{ color: '#666', fontFamily: "'Montserrat', sans-serif", mt: 1 }}>
+                Motivation from the legends of the game
+              </Typography>
+            </Box>
+
             <Box
               sx={{
                 display: 'flex',
@@ -217,7 +314,7 @@ const Home = () => {
             </Box>
           </Grid>
 
-          {/* Upcoming Events Section */}
+          {/* Upcoming Events Section Banner */}
           <Grid item xs={12}>
             <Card
               sx={{
@@ -262,6 +359,16 @@ const Home = () => {
                   Stay tuned for exciting basketball matches and championship updates.
                   Follow the journey of your favorite teams as they compete for glory.
                 </Typography>
+
+                <Box sx={{ textAlign: 'center', mt: 4 }}>
+                  <Button
+                    variant="contained"
+                    onClick={() => navigate('/fixtures')}
+                    sx={{ backgroundColor: '#1a1a1a', borderRadius: '20px', px: 3 }}
+                  >
+                    See Schedule
+                  </Button>
+                </Box>
               </CardContent>
             </Card>
           </Grid>
