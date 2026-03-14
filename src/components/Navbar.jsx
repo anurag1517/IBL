@@ -76,6 +76,27 @@ const Navbar = () => {
           />
         </ListItem>
       ))}
+      {/* Live Match in mobile drawer */}
+      <ListItem
+        component={RouterLink}
+        to="/live-match"
+        onClick={handleDrawerToggle}
+        sx={{
+          backgroundColor: isActiveRoute('/live-match') ? 'rgba(255,42,42,0.15)' : 'transparent',
+          '&:hover': { backgroundColor: 'rgba(255,42,42,0.1)' }
+        }}
+      >
+        <ListItemText
+          primary="🔴 Live Match"
+          sx={{
+            '& .MuiTypography-root': {
+              color: '#ff2a2a',
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 700
+            }
+          }}
+        />
+      </ListItem>
       {/* Captain Portal in mobile drawer */}
       <ListItem
         component={RouterLink}
@@ -194,6 +215,33 @@ const Navbar = () => {
                 </Button>
               ))}
             </Box>
+            {/* Live Match button */}
+            <Button
+              component={RouterLink}
+              to="/live-match"
+              sx={{
+                color: isActiveRoute('/live-match') ? '#fff' : '#ff2a2a',
+                background: isActiveRoute('/live-match')
+                  ? 'linear-gradient(135deg, #ff2a2a, #cc0000)'
+                  : 'transparent',
+                border: isActiveRoute('/live-match') ? 'none' : '1px solid rgba(255,42,42,0.5)',
+                borderRadius: '20px',
+                padding: '6px 18px',
+                fontSize: { sm: '0.8rem', md: '0.85rem' },
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: 700,
+                whiteSpace: 'nowrap',
+                ml: 1,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  backgroundColor: 'rgba(255,42,42,0.15)',
+                  border: '1px solid #ff2a2a',
+                  boxShadow: '0 0 12px rgba(255,42,42,0.3)'
+                }
+              }}
+            >
+              🔴 Live Match
+            </Button>
             {/* Captain Portal button */}
             <Button
               component={RouterLink}

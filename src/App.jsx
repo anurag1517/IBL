@@ -10,6 +10,7 @@ import Archives from './components/Archives';
 import Gallery from './components/Gallery';
 import AdminDashboard from './components/admin/AdminDashboard';
 import CaptainDashboard from './components/CaptainDashboard';
+import LiveMatch from './components/LiveMatch';
 import { Box, CircularProgress } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
@@ -30,20 +31,20 @@ const App = () => {
 
     // Listen to fixtures
     const unsubscribeFixtures = onSnapshot(collection(db, 'fixtures'), (snapshot) => {
-      const fixturesData = snapshot.docs.map(doc => doc.data());
+      const fixturesData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       // Optionally sort by some logic, but for now just set
       setFixtures(fixturesData);
     });
 
     // Listen to points table
     const unsubscribePoints = onSnapshot(collection(db, 'pointsTable'), (snapshot) => {
-      const pointsData = snapshot.docs.map(doc => doc.data());
+      const pointsData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       setPointsTable(pointsData);
     });
 
     // Listen to stats
     const unsubscribeStats = onSnapshot(collection(db, 'stats'), (snapshot) => {
-      const statsData = snapshot.docs.map(doc => doc.data());
+      const statsData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       // Sort by score descending, then assign ranks
       statsData.sort((a, b) => b.score - a.score);
       statsData.forEach((player, index) => {
@@ -66,7 +67,7 @@ const App = () => {
 
     // Listen to archives
     const unsubscribeArchives = onSnapshot(collection(db, 'archives'), (snapshot) => {
-      const archivesData = snapshot.docs.map(doc => doc.data());
+      const archivesData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       setArchives(archivesData);
       setLoading(false);
     });
@@ -102,6 +103,7 @@ const App = () => {
               <Route path="/archives" element={<Archives archives={archives} />} />
               <Route path="/gallery" element={<Gallery galleryData={gallery} />} />
               <Route path="/captain" element={<CaptainDashboard />} />
+              <Route path="/live-match" element={<LiveMatch />} />
               <Route path="/admin" element={
                 <AdminDashboard
                   fixtures={fixtures}
