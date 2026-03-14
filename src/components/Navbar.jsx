@@ -76,6 +76,27 @@ const Navbar = () => {
           />
         </ListItem>
       ))}
+      {/* Captain Portal in mobile drawer */}
+      <ListItem
+        component={RouterLink}
+        to="/captain"
+        onClick={handleDrawerToggle}
+        sx={{
+          backgroundColor: isActiveRoute('/captain') ? 'rgba(255,42,42,0.15)' : 'transparent',
+          '&:hover': { backgroundColor: 'rgba(255,42,42,0.1)' }
+        }}
+      >
+        <ListItemText
+          primary="Captain Portal"
+          sx={{
+            '& .MuiTypography-root': {
+              color: '#ff2a2a',
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 700
+            }
+          }}
+        />
+      </ListItem>
     </List>
   );
 
@@ -141,37 +162,63 @@ const Navbar = () => {
           </IconButton>
         ) : (
           /* Desktop Navigation */
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: { sm: 1, md: 2, lg: 3 },
-            flex: '2',
-          }}>
-            {navItems.map((item) => (
-              <Button
-                key={item}
-                component={RouterLink}
-                to={`/${item}`}
-                sx={{
-                  color: isActiveRoute(`/${item}`) ? '#ff2a2a' : '#ffffff',
-                  borderBottom: isActiveRoute(`/${item}`) ? '2px solid #ff2a2a' : 'none',
-                  borderRadius: '4px',
-                  padding: '8px 16px',
-                  fontSize: { sm: '0.85rem', md: '0.9rem', lg: '1rem' },
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 42, 42, 0.1)',
-                    color: '#ff2a2a',
-                    borderBottom: '2px solid #ff2a2a'
-                  }
-                }}
-              >
-                {item.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-              </Button>
-            ))}
-          </Box>
+          <>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: { sm: 1, md: 2, lg: 3 },
+              flex: '2',
+            }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item}
+                  component={RouterLink}
+                  to={`/${item}`}
+                  sx={{
+                    color: isActiveRoute(`/${item}`) ? '#ff2a2a' : '#ffffff',
+                    borderBottom: isActiveRoute(`/${item}`) ? '2px solid #ff2a2a' : 'none',
+                    borderRadius: '4px',
+                    padding: '8px 16px',
+                    fontSize: { sm: '0.85rem', md: '0.9rem', lg: '1rem' },
+                    whiteSpace: 'nowrap',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 42, 42, 0.1)',
+                      color: '#ff2a2a',
+                      borderBottom: '2px solid #ff2a2a'
+                    }
+                  }}
+                >
+                  {item.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                </Button>
+              ))}
+            </Box>
+            {/* Captain Portal button */}
+            <Button
+              component={RouterLink}
+              to="/captain"
+              sx={{
+                color: '#ff2a2a',
+                border: isActiveRoute('/captain') ? '1px solid #ff2a2a' : '1px solid rgba(255,42,42,0.5)',
+                borderRadius: '20px',
+                padding: '6px 18px',
+                fontSize: { sm: '0.8rem', md: '0.85rem' },
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: 700,
+                whiteSpace: 'nowrap',
+                ml: 1,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  backgroundColor: 'rgba(255,42,42,0.15)',
+                  border: '1px solid #ff2a2a',
+                  boxShadow: '0 0 12px rgba(255,42,42,0.3)'
+                }
+              }}
+            >
+              Captain Portal
+            </Button>
+          </>
         )}
 
         {/* Mobile Drawer */}

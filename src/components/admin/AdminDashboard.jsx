@@ -30,7 +30,9 @@ function TabPanel(props) {
 }
 
 const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    sessionStorage.getItem('isAdmin') === 'true'
+  );
   const [passwordInput, setPasswordInput] = useState('');
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -58,6 +60,7 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
   const handleLogin = (e) => {
     e.preventDefault();
     if (passwordInput === import.meta.env.VITE_ADMIN_PASSWORD) {
+      sessionStorage.setItem('isAdmin', 'true');
       setIsAuthenticated(true);
     } else {
       alert("Incorrect password");
@@ -228,18 +231,15 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
   };
 
   // --- Gallery Logic ---
-  const handleOpenGallery = (year = null) => {
-    if (year) {
-      setEditingGallery({ year, images: galleryData[year] || [] });
-    } else {
-      setEditingGallery({ year: new Date().getFullYear().toString(), images: [] });
-    }
+  const handleOpenGallery = () => {
+    // Assuming galleryData is now an array from App.js based on the new structure
+    setEditingGallery({ images: Array.isArray(galleryData) ? galleryData : [] });
     setOpenGalleryDialog(true);
   };
 
   const handleSaveGallery = async () => {
     try {
-      await setDoc(doc(db, 'gallery', editingGallery.year), {
+      await setDoc(doc(db, 'gallery', 'main'), {
         images: editingGallery.images
       });
       setOpenGalleryDialog(false);
@@ -446,24 +446,22 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
       {/* GALLERY TAB */}
       <TabPanel value={tabIndex} index={3}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-          <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenGallery()} sx={{ backgroundColor: 'black' }}>
-            Add / Edit Gallery Year
+          <Button variant="contained" startIcon={<EditIcon />} onClick={() => handleOpenGallery()} sx={{ backgroundColor: 'black' }}>
+            Manage Gallery Images
           </Button>
         </Box>
         <Grid container spacing={2}>
-          {Object.keys(galleryData).sort().reverse().map((year) => (
-            <Grid item xs={12} sm={6} md={4} key={year}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant="h6" fontWeight="bold">IBL {year}</Typography>
-                  <IconButton size="small" onClick={() => handleOpenGallery(year)}>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-                <Typography variant="body2">{galleryData[year].length} Images</Typography>
-              </Paper>
-            </Grid>
-          ))}
+          <Grid item xs={12}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6" fontWeight="bold">Main Gallery</Typography>
+                <IconButton size="small" onClick={() => handleOpenGallery()}>
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Box>
+              <Typography variant="body2">{Array.isArray(galleryData) ? galleryData.length : 0} Images</Typography>
+            </Paper>
+          </Grid>
         </Grid>
       </TabPanel>
 
@@ -677,22 +675,13 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
 
       {/* GALLERY DIALOG */}
       <Dialog open={openGalleryDialog} onClose={() => setOpenGalleryDialog(false)} fullWidth maxWidth="sm">
-        <DialogTitle>{editingGallery?.year && galleryData[editingGallery.year] ? `Edit Gallery ${editingGallery.year}` : 'Add Gallery Year'}</DialogTitle>
+        <DialogTitle>Manage Gallery Images</DialogTitle>
         <DialogContent dividers>
           <Grid container spacing={2}>
             <Grid item xs={12}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>Image URLs (One per line). Admins can modify these to delete/reorder.</Typography>
               <TextField
-                fullWidth label="Year (e.g. 2025)"
-                value={editingGallery?.year || ''}
-                onChange={(e) => setEditingGallery({ ...editingGallery, year: e.target.value })}
-                margin="dense"
-                disabled={!!(editingGallery?.year && galleryData[editingGallery.year])}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>Image URLs (One per line)</Typography>
-              <TextField
-                fullWidth multiline rows={6}
+                fullWidth multiline rows={10}
                 value={editingGallery?.images?.join('\n') || ''}
                 onChange={(e) => setEditingGallery({ ...editingGallery, images: e.target.value.split('\n').filter(url => url.trim() !== '') })}
                 placeholder="https://imgur.com/example1.jpg&#10;https://imgur.com/example2.jpg"

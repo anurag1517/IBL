@@ -9,6 +9,7 @@ import Teams from './components/Teams';
 import Archives from './components/Archives';
 import Gallery from './components/Gallery';
 import AdminDashboard from './components/admin/AdminDashboard';
+import CaptainDashboard from './components/CaptainDashboard';
 import { Box, CircularProgress } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
@@ -20,7 +21,7 @@ const App = () => {
   const [fixtures, setFixtures] = useState([]);
   const [pointsTable, setPointsTable] = useState([]);
   const [stats, setStats] = useState([]);
-  const [gallery, setGallery] = useState({});
+  const [gallery, setGallery] = useState([]);
   const [archives, setArchives] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -53,11 +54,14 @@ const App = () => {
 
     // Listen to gallery
     const unsubscribeGallery = onSnapshot(collection(db, 'gallery'), (snapshot) => {
-      const galleryData = {};
+      let galleryImages = [];
       snapshot.docs.forEach(doc => {
-        galleryData[doc.id] = doc.data().images || [];
+        const data = doc.data();
+        if (data.images && Array.isArray(data.images)) {
+          galleryImages = [...galleryImages, ...data.images];
+        }
       });
-      setGallery(galleryData);
+      setGallery(galleryImages);
     });
 
     // Listen to archives
@@ -97,6 +101,7 @@ const App = () => {
               <Route path="/stats" element={<Stats stats={stats} />} />
               <Route path="/archives" element={<Archives archives={archives} />} />
               <Route path="/gallery" element={<Gallery galleryData={gallery} />} />
+              <Route path="/captain" element={<CaptainDashboard />} />
               <Route path="/admin" element={
                 <AdminDashboard
                   fixtures={fixtures}
