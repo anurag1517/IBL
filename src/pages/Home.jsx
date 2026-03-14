@@ -105,7 +105,7 @@ const Home = () => {
               <Typography
                 variant="h1"
                 sx={{
-                  fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
+                  fontSize: { xs: '2.8rem', sm: '3.5rem', md: '4.5rem' },
                   fontFamily: "'Poppins', sans-serif",
                   fontWeight: 700,
                   textTransform: 'uppercase',
@@ -125,7 +125,8 @@ const Home = () => {
                 variant="h5"
                 sx={{
                   fontFamily: "'Montserrat', sans-serif",
-                  color: '#333',
+                  fontSize: { xs: '1.2rem', sm: '1.35rem', md: '1.5rem' },
+                  color: 'rgba(255, 255, 255, 0.7)',
                   maxWidth: '800px',
                   mx: 'auto',
                   lineHeight: 1.6
@@ -208,24 +209,24 @@ const Home = () => {
                 }}
               >
                 {cascadingQuotes.map((quote, index) => (
-                  <Card
+                  <Box
                     key={index}
                     sx={{
-                      width: { xs: '300px', sm: '400px', md: '500px' },
-                      flexShrink: 0,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      background: 'rgba(20, 20, 20, 1)',
-                      border: '1px solid rgba(255, 42, 42, 0.15)',
-                      borderRadius: '30px',
-                      whiteSpace: 'normal',
+                      flex: '0 0 auto',
+                      width: { xs: '280px', sm: '350px', md: '450px' },
+                      scrollSnapAlign: 'center',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      p: { xs: 3, sm: 4 },
+                      borderRadius: '24px',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      backdropFilter: 'blur(10px)',
                       transition: 'all 0.3s ease',
                       '&:hover': {
-                        transform: 'scale(1.05)',
-                        boxShadow: '0 0 30px rgba(255, 42, 42, 0.5)',
-                        border: '1px solid rgba(255, 42, 42, 0.8)',
-                        zIndex: 10
-                      }
+                        transform: 'translateY(-10px)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                        borderColor: '#ff2a2a',
+                        boxShadow: '0 10px 30px rgba(255, 42, 42, 0.2)',
+                      },
                     }}
                   >
                     <CardContent sx={{
@@ -240,7 +241,7 @@ const Home = () => {
                         variant="h6"
                         sx={{
                           fontFamily: "'Playfair Display', serif",
-                          fontSize: { xs: '1.1rem', sm: '1.2rem', md: '1.4rem' },
+                          fontSize: { xs: '1.25rem', sm: '1.3rem', md: '1.4rem' },
                           fontStyle: 'italic',
                           color: '#ffffff',
                           lineHeight: 1.5,
@@ -256,13 +257,13 @@ const Home = () => {
                           fontWeight: 600,
                           textAlign: 'right',
                           color: '#ff2a2a',
-                          fontSize: { xs: '0.9rem', sm: '1rem' }
+                          fontSize: { xs: '0.95rem', sm: '1rem' }
                         }}
                       >
                         — {quote.author}
                       </Typography>
                     </CardContent>
-                  </Card>
+                  </Box>
                 ))}
               </Box>
             </Box>

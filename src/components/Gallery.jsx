@@ -70,7 +70,7 @@ const Gallery = ({ galleryData = [] }) => {
               textAlign: 'center',
               fontWeight: 800,
               fontFamily: "'Poppins', sans-serif",
-              textTransform: 'uppercase',
+              fontSize: { xs: '1.8rem', sm: '2rem', md: '2.5rem' },
               letterSpacing: '2px'
             }}
           >

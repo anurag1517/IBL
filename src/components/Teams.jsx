@@ -123,6 +123,7 @@ const Teams = () => {
               fontWeight: 800,
               fontFamily: "'Poppins', sans-serif",
               textTransform: 'uppercase',
+              fontSize: { xs: '2.2rem', sm: '2.5rem', md: '3rem' },
               letterSpacing: '2px'
             }}
           >
@@ -151,6 +152,7 @@ const Teams = () => {
                     fontWeight: 800,
                     fontFamily: "'Poppins', sans-serif",
                     borderBottom: '2px solid rgba(255, 42, 42, 0.2)',
+                    fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.1rem' },
                     pb: 2
                   }}
                 >
@@ -181,6 +183,7 @@ const Teams = () => {
                     fontWeight: 800,
                     fontFamily: "'Poppins', sans-serif",
                     borderBottom: '2px solid rgba(255, 42, 42, 0.2)',
+                    fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.1rem' },
                     pb: 2
                   }}
                 >

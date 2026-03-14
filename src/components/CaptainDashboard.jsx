@@ -182,7 +182,7 @@ export default function CaptainDashboard() {
                 </Typography>
                 <Typography sx={{
                   color: '#ffffff', fontFamily: "'Poppins', sans-serif",
-                  fontWeight: 800, fontSize: { xs: '1.4rem', sm: '1.8rem' }
+                  fontWeight: 800, fontSize: { xs: '1.6rem', sm: '1.8rem' }
                 }}>
                   {authedTeam.name}
                 </Typography>
@@ -399,7 +399,7 @@ export default function CaptainDashboard() {
             color: '#ffffff', fontFamily: "'Poppins', sans-serif",
             fontWeight: 800, mb: 1,
             textTransform: 'uppercase', letterSpacing: { xs: 1, sm: 2 },
-            fontSize: { xs: '1.6rem', sm: '2.2rem', md: '3rem' }
+            fontSize: { xs: '1.8rem', sm: '2.2rem', md: '3rem' }
           }}>
             <span style={{ color: '#ff2a2a' }}>Captain</span> Portal
           </Typography>

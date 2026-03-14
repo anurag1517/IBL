@@ -47,7 +47,7 @@ export default function PublicLiveMatch() {
             </Box>
             <Typography sx={{
               color: '#fff', fontFamily: "'Poppins', sans-serif",
-              fontWeight: 800, fontSize: { xs: '1.8rem', sm: '2.5rem' },
+              fontSize: { xs: '2rem', sm: '2.5rem' },
               textTransform: 'uppercase', letterSpacing: 2,
             }}>
               <span style={{ color: '#ff2a2a' }}>Live</span> Matches
@@ -201,7 +201,7 @@ function TeamScoreBlock({ name, score, color }) {
       </Box>
       <Typography sx={{
         color, fontFamily: "'Poppins', sans-serif",
-        fontWeight: 900, fontSize: { xs: '3rem', sm: '4rem' }, lineHeight: 1,
+        fontWeight: 900, fontSize: { xs: '3.5rem', sm: '4rem' }, lineHeight: 1,
       }}>
         {score}
       </Typography>

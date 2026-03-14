@@ -323,9 +323,8 @@ const Archives = ({ archives = [] }) => {
               textAlign: 'center',
               fontWeight: 800,
               fontFamily: "'Poppins', sans-serif",
-              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
-              textTransform: 'uppercase',
-              letterSpacing: '2px'
+            fontSize: { xs: '1.8rem', sm: '2rem', md: '2.5rem' },
+            letterSpacing: '2px'
             }}
           >
             IBL <span style={{ color: '#ff2a2a' }}>Hall of Fame</span>

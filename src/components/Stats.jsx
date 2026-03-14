@@ -23,7 +23,7 @@ const Stats = ({ stats = [] }) => {
               textAlign: 'center',
               fontWeight: 800,
               fontFamily: "'Poppins', sans-serif",
-              fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem' },
+              fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
               textTransform: 'uppercase',
               letterSpacing: '2px'
             }}
@@ -82,10 +82,10 @@ const Stats = ({ stats = [] }) => {
                   sx={{
                     color: player.rank === 1 ? '#FFD700' :
                       player.rank === 2 ? '#C0C0C0' :
-                        player.rank === 3 ? '#CD7F32' : 'black',
+                        player.rank === 3 ? '#CD7F32' : 'rgba(255,255,255,0.1)',
                     mb: 2,
                     fontWeight: 'bold',
-                    fontSize: { xs: '2.5rem', sm: '3rem' }
+                    fontSize: { xs: '2.8rem', sm: '3rem' }
                   }}
                 >
                   {player.rank}
@@ -96,7 +96,7 @@ const Stats = ({ stats = [] }) => {
                     color: '#ffffff',
                     mb: 1,
                     fontWeight: 700,
-                    fontSize: { xs: '1.2rem', sm: '1.5rem' },
+                    fontSize: { xs: '1.3rem', sm: '1.5rem' },
                     fontFamily: "'Montserrat', sans-serif"
                   }}
                 >
@@ -118,7 +118,7 @@ const Stats = ({ stats = [] }) => {
                   sx={{
                     color: '#ff2a2a',
                     fontWeight: 800,
-                    fontSize: { xs: '1.8rem', sm: '2rem' }
+                    fontSize: { xs: '1.9rem', sm: '2rem' }
                   }}
                 >
                   {player.score}

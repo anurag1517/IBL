@@ -166,7 +166,7 @@ const PointsTable = ({ pointsTable }) => {
             sx={{
               color: '#ffffff', textAlign: 'center', mb: 2,
               fontWeight: 800, fontFamily: "'Poppins', sans-serif",
-              fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem' },
+              fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
               textTransform: 'uppercase', letterSpacing: '2px'
             }}
           >

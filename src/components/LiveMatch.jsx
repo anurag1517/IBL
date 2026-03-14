@@ -438,7 +438,7 @@ export default function LiveMatch({ pointsTable }) {
               <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 64, height: 64, borderRadius: '50%', background: 'linear-gradient(135deg, #ff2a2a, #880000)', boxShadow: '0 0 28px rgba(255,42,42,0.4)', mb: 2 }}>
                 <SportsBasketballIcon sx={{ color: '#fff', fontSize: 32 }} />
               </Box>
-              <Typography sx={{ color: '#fff', fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: { xs: '1.8rem', sm: '2.5rem' }, textTransform: 'uppercase', letterSpacing: 2 }}>
+              <Typography sx={{ color: '#fff', fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: { xs: '2rem', sm: '2.5rem' }, textTransform: 'uppercase', letterSpacing: 2 }}>
                 <span style={{ color: '#ff2a2a' }}>Live</span> Match
               </Typography>
               <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontFamily: "'Montserrat', sans-serif", fontSize: { xs: '0.85rem', sm: '1rem' }, mt: 0.5 }}>
@@ -587,7 +587,7 @@ export default function LiveMatch({ pointsTable }) {
           <Box sx={{ p: { xs: 2, sm: 4 }, backgroundColor: '#000', borderRadius: '30px', border: '1px solid rgba(255,42,42,0.2)' }}>
             <Box sx={{ textAlign: 'center', mb: 4 }}>
               <EmojiEventsIcon sx={{ color: '#FFD700', fontSize: 56, mb: 1 }} />
-              <Typography sx={{ color: '#fff', fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: { xs: '1.8rem', sm: '2.4rem' }, textTransform: 'uppercase', letterSpacing: 2 }}>Match Complete</Typography>
+              <Typography sx={{ color: '#fff', fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: { xs: '2rem', sm: '2.4rem' }, textTransform: 'uppercase', letterSpacing: 2 }}>Match Complete</Typography>
               {winner ? (
                 <Typography sx={{ color: '#FFD700', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '1.05rem', mt: 0.5 }}>🏆 {winner.name} wins!</Typography>
               ) : (
@@ -605,7 +605,7 @@ export default function LiveMatch({ pointsTable }) {
                   <Box sx={{ textAlign: 'center', p: { xs: 2.5, sm: 3.5 }, backgroundColor: '#0a0a0a', border: `2px solid ${color}44`, borderRadius: '20px', minWidth: 140 }}>
                     <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontFamily: "'Montserrat', sans-serif", fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: 2, mb: 0.5 }}>{label}</Typography>
                     <Typography sx={{ color: '#fff', fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: { xs: '0.9rem', sm: '1.05rem' }, mb: 1 }}>{team.name}</Typography>
-                    <Typography sx={{ color, fontFamily: "'Poppins', sans-serif", fontWeight: 900, fontSize: { xs: '2.5rem', sm: '3rem' }, lineHeight: 1 }}>{total}</Typography>
+                    <Typography sx={{ color, fontFamily: "'Poppins', sans-serif", fontWeight: 900, fontSize: { xs: '3rem', sm: '3rem' }, lineHeight: 1 }}>{total}</Typography>
                     <Typography sx={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem' }}>pts</Typography>
                   </Box>
                 </React.Fragment>
