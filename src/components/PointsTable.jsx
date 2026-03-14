@@ -6,6 +6,7 @@ import {
   List, ListItem, Chip, CircularProgress, Divider
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import SportsBasketballIcon from '@mui/icons-material/SportsBasketball';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import Footer from './Footer';
 import { db } from '../firebase';
@@ -199,7 +200,7 @@ const PointsTable = ({ pointsTable }) => {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
               <Box sx={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #ff2a2a, #880000)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <SportsCricketIcon sx={{ color: '#fff', fontSize: 18 }} />
+                <SportsBasketballIcon sx={{ color: '#fff', fontSize: 18 }} />
               </Box>
               <Box>
                 <Typography sx={{ color: '#ffffff', fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: '1.1rem', lineHeight: 1.2 }}>
@@ -225,7 +226,7 @@ const PointsTable = ({ pointsTable }) => {
             </Box>
           ) : matches.length === 0 ? (
             <Box sx={{ py: 5, textAlign: 'center' }}>
-              <SportsCricketIcon sx={{ fontSize: 44, color: 'rgba(255,255,255,0.1)', mb: 1 }} />
+              <SportsBasketballIcon sx={{ fontSize: 44, color: 'rgba(255,255,255,0.1)', mb: 1 }} />
               <Typography sx={{ color: 'rgba(255,255,255,0.35)', fontFamily: "'Montserrat', sans-serif", fontSize: '0.9rem' }}>
                 No matches played yet
               </Typography>

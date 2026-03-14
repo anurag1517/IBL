@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Box, Typography, Container, Paper, Chip, CircularProgress, Divider
 } from '@mui/material';
-import SportsCricketIcon from '@mui/icons-material/SportsCricket';
+import SportsBasketballIcon from '@mui/icons-material/SportsBasketball';
 import ShieldIcon from '@mui/icons-material/Shield';
 import Footer from './Footer';
 import { db } from '../firebase';
@@ -43,7 +43,7 @@ export default function PublicLiveMatch() {
               background: 'linear-gradient(135deg, #ff2a2a, #880000)',
               boxShadow: '0 0 28px rgba(255,42,42,0.4)', mb: 2,
             }}>
-              <SportsCricketIcon sx={{ color: '#fff', fontSize: 32 }} />
+              <SportsBasketballIcon sx={{ color: '#fff', fontSize: 32 }} />
             </Box>
             <Typography sx={{
               color: '#fff', fontFamily: "'Poppins', sans-serif",
@@ -67,7 +67,7 @@ export default function PublicLiveMatch() {
             </Box>
           ) : liveMatches.length === 0 ? (
             <Box sx={{ py: 8, textAlign: 'center' }}>
-              <SportsCricketIcon sx={{ fontSize: 56, color: 'rgba(255,255,255,0.08)', mb: 2 }} />
+              <SportsBasketballIcon sx={{ fontSize: 56, color: 'rgba(255,255,255,0.08)', mb: 2 }} />
               <Typography sx={{
                 color: 'rgba(255,255,255,0.3)', fontFamily: "'Poppins', sans-serif",
                 fontWeight: 700, fontSize: '1.1rem',

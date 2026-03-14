@@ -116,6 +116,7 @@ const App = () => {
                   archives={archives}
                 />
               } />
+              <Route path="/admin/scoring/:matchId" element={<LiveMatch pointsTable={pointsTable} />} />
             </Routes>
           </Box>
         </Box>

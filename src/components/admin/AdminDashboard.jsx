@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box, Typography, Tabs, Tab, TextField, Button, IconButton,
   Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Dialog, DialogTitle, DialogContent, DialogActions, Grid
+  Dialog, DialogTitle, DialogContent, DialogActions, Grid,
+  List, ListItem, ListItemText, ListItemSecondaryAction, Chip, Divider
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { db } from '../../firebase';
-import { doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { doc, setDoc, deleteDoc, onSnapshot, query, where, collection, orderBy } from 'firebase/firestore';
 import LiveMatch from '../LiveMatch';
 
 
@@ -37,6 +40,25 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
   const [passwordInput, setPasswordInput] = useState('');
 
   const [tabIndex, setTabIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const [activeMatches, setActiveMatches] = useState([]);
+  const [loadingMatches, setLoadingMatches] = useState(true);
+
+  // --- Active Matches Listener ---
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const q = query(
+      collection(db, 'matches'),
+      where('status', '==', 'live'),
+      orderBy('startedAt', 'desc')
+    );
+    const unsubscribe = onSnapshot(q, (snap) => {
+      setActiveMatches(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      setLoadingMatches(false);
+    });
+    return () => unsubscribe();
+  }, [isAuthenticated]);
 
   // Fixture states
   const [openFixtureDialog, setOpenFixtureDialog] = useState(false);
@@ -775,8 +797,60 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
 
       {/* LIVE MATCH TAB */}
       <TabPanel value={tabIndex} index={5}>
-        <Box sx={{ mx: -2, mt: -3 }}>
-          <LiveMatch pointsTable={pointsTable} />
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" sx={{ color: '#000', mb: 2, fontWeight: 'bold' }}>Ongoing Live Matches</Typography>
+          {loadingMatches ? (
+            <Typography>Loading matches...</Typography>
+          ) : activeMatches.length === 0 ? (
+            <Paper sx={{ p: 3, textAlign: 'center', backgroundColor: '#f5f5f5' }}>
+              <Typography color="textSecondary">No live matches currently running.</Typography>
+            </Paper>
+          ) : (
+            <List>
+              {activeMatches.map((match) => (
+                <ListItem key={match.id} component={Paper} sx={{ mb: 2, p: 2, border: '1px solid #ff2a2a44' }}>
+                  <ListItemText
+                    primary={
+                      <Typography variant="subtitle1" fontWeight="bold">
+                        {match.teamAName} vs {match.teamBName}
+                      </Typography>
+                    }
+                    secondary={
+                      <Box sx={{ mt: 0.5 }}>
+                        <Typography variant="body2" color="textSecondary">
+                          Match ID: {match.id} | Started: {match.startedAt ? new Date(match.startedAt).toLocaleString() : 'N/A'}
+                        </Typography>
+                        <Chip 
+                          label={`${match.totalA || 0} - ${match.totalB || 0}`} 
+                          size="small" 
+                          sx={{ mt: 1, backgroundColor: '#ff2a2a', color: '#fff', fontWeight: 'bold' }} 
+                        />
+                      </Box>
+                    }
+                  />
+                  <ListItemSecondaryAction>
+                    <Button
+                      variant="contained"
+                      startIcon={<PlayArrowIcon />}
+                      onClick={() => navigate(`/admin/scoring/${match.id}`)}
+                      sx={{ backgroundColor: '#2a8fff', '&:hover': { backgroundColor: '#1a76d2' } }}
+                    >
+                      Continue Scoring
+                    </Button>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          )}
+        </Box>
+
+        <Divider sx={{ mb: 4 }} />
+
+        <Box>
+          <Typography variant="h6" sx={{ color: '#000', mb: 2, fontWeight: 'bold' }}>Start a New Match</Typography>
+          <Box sx={{ mx: -2, mt: -1 }}>
+            <LiveMatch pointsTable={pointsTable} />
+          </Box>
         </Box>
       </TabPanel>
 

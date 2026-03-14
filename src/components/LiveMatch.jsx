@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box, Typography, Container, Grid, Paper, Button, Chip, Divider,
   CircularProgress, Alert, Snackbar, Avatar
@@ -146,6 +147,9 @@ function TeamScoreColumn({ team, members, scores, existingScores, onAdd, loading
 }
 
 export default function LiveMatch({ pointsTable }) {
+  const { matchId: urlMatchId } = useParams();
+  const navigate = useNavigate();
+
   const dynamicTeams = (pointsTable || []).map(t => ({
     id: t.id,
     name: t.team,
@@ -155,7 +159,7 @@ export default function LiveMatch({ pointsTable }) {
   const TEAMS = dynamicTeams.length > 0 ? dynamicTeams : ALL_TEAMS;
 
   const [phase, setPhase] = useState('select'); // 'select' | 'scoring' | 'summary'
-  const [matchId, setMatchId] = useState(null);
+  const [matchId, setMatchId] = useState(urlMatchId || null);
 
   const [teamA, setTeamA] = useState(null);
   const [teamB, setTeamB] = useState(null);
@@ -172,20 +176,24 @@ export default function LiveMatch({ pointsTable }) {
   const [matchSummary, setMatchSummary] = useState(null);
   const [resuming, setResuming] = useState(true); // loading state for resume check
 
-  // ── On mount: resume any in-progress match ────────────────────────────────
+  // ── On mount / ID change: load the match ────────────────────────────────
   useEffect(() => {
-    const savedId = sessionStorage.getItem(SESSION_MATCH_KEY);
-    if (!savedId) { setResuming(false); return; }
+    const idToLoad = urlMatchId || sessionStorage.getItem(SESSION_MATCH_KEY);
+    if (!idToLoad) { 
+      setResuming(false); 
+      if (urlMatchId) navigate('/admin'); // invalid ID URL
+      return; 
+    }
 
     (async () => {
       try {
-        const snap = await getDoc(doc(db, 'matches', savedId));
+        const snap = await getDoc(doc(db, 'matches', idToLoad));
         if (snap.exists() && snap.data().status === 'live') {
           const data = snap.data();
           const tA = TEAMS.find(t => t.id === data.teamAId);
           const tB = TEAMS.find(t => t.id === data.teamBId);
           if (tA && tB) {
-            setMatchId(savedId);
+            setMatchId(idToLoad);
             setTeamA(tA);
             setTeamB(tB);
             setScoresA(data.scoresA || {});
@@ -197,17 +205,36 @@ export default function LiveMatch({ pointsTable }) {
             setPhase('scoring');
           } else {
             sessionStorage.removeItem(SESSION_MATCH_KEY);
+            if (urlMatchId) navigate('/admin');
           }
+        } else if (snap.exists() && snap.data().status === 'completed') {
+            // Already completed - maybe show summary
+            const data = snap.data();
+            const tA = TEAMS.find(t => t.id === data.teamAId) || { name: data.teamAName, id: data.teamAId };
+            const tB = TEAMS.find(t => t.id === data.teamBId) || { name: data.teamBName, id: data.teamBId };
+            const allScored = [
+                ...Object.entries(data.scoresA || {}).map(([name, pts]) => ({ name, pts, team: data.teamAName })),
+                ...Object.entries(data.scoresB || {}).map(([name, pts]) => ({ name, pts, team: data.teamBName })),
+            ];
+            const top5 = [...allScored].sort((a, b) => b.pts - a.pts).slice(0, 5);
+            setMatchSummary({ 
+                teamA: { team: tA, total: data.totalA }, 
+                teamB: { team: tB, total: data.totalB }, 
+                top5 
+            });
+            setPhase('summary');
         } else {
           sessionStorage.removeItem(SESSION_MATCH_KEY);
+          if (urlMatchId) navigate('/admin');
         }
       } catch (e) {
-        console.error('Resume error:', e);
+        console.error('Match load error:', e);
         sessionStorage.removeItem(SESSION_MATCH_KEY);
+        if (urlMatchId) navigate('/admin');
       }
       setResuming(false);
     })();
-  }, []);
+  }, [urlMatchId]);
 
   // ── Autosave: persist scores to Firestore every time they change ───────────
   useEffect(() => {
@@ -275,6 +302,7 @@ export default function LiveMatch({ pointsTable }) {
       setScoresA({});
       setScoresB({});
       setPhase('scoring');
+      navigate(`/admin/scoring/${newMatchId}`);
     } catch (err) {
       console.error(err);
       setSnackbar({ open: true, message: 'Failed to start match.', severity: 'error' });
@@ -371,6 +399,7 @@ export default function LiveMatch({ pointsTable }) {
     setExistingScoresA({}); setExistingScoresB({});
     setMatchSummary(null); setMatchId(null);
     sessionStorage.removeItem(SESSION_MATCH_KEY);
+    navigate('/admin');
   };
 
   const handleTeamClick = (team) => {
