@@ -11,6 +11,7 @@ import Gallery from './components/Gallery';
 import AdminDashboard from './components/admin/AdminDashboard';
 import CaptainDashboard from './components/CaptainDashboard';
 import LiveMatch from './components/LiveMatch';
+import PublicLiveMatch from './components/PublicLiveMatch';
 import { Box, CircularProgress } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
@@ -103,7 +104,7 @@ const App = () => {
               <Route path="/archives" element={<Archives archives={archives} />} />
               <Route path="/gallery" element={<Gallery galleryData={gallery} />} />
               <Route path="/captain" element={<CaptainDashboard />} />
-              <Route path="/live-match" element={<LiveMatch />} />
+              <Route path="/live-match" element={<PublicLiveMatch />} />
               <Route path="/admin" element={
                 <AdminDashboard
                   fixtures={fixtures}

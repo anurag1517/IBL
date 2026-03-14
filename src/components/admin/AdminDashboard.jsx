@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import { db } from '../../firebase';
 import { doc, setDoc, deleteDoc } from 'firebase/firestore';
+import LiveMatch from '../LiveMatch';
 
 
 function TabPanel(props) {
@@ -312,6 +313,7 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
           <Tab label="Stats" />
           <Tab label="Gallery" />
           <Tab label="Archives" />
+          <Tab label="🔴 Live Match" />
         </Tabs>
       </Box>
 
@@ -770,6 +772,13 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
           <Button variant="contained" onClick={handleSaveArchive} sx={{ backgroundColor: 'black' }}>Save</Button>
         </DialogActions>
       </Dialog>
+
+      {/* LIVE MATCH TAB */}
+      <TabPanel value={tabIndex} index={5}>
+        <Box sx={{ mx: -2, mt: -3 }}>
+          <LiveMatch pointsTable={pointsTable} />
+        </Box>
+      </TabPanel>
 
     </Box>
   );
