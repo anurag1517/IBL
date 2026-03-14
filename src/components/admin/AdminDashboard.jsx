@@ -230,6 +230,17 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
     }
   };
 
+  const handleDeletePoints = async (id) => {
+    if (window.confirm("Are you sure you want to delete this team from the points table?")) {
+      try {
+        await deleteDoc(doc(db, 'pointsTable', id));
+      } catch (error) {
+        console.error("Error deleting team: ", error);
+        alert("Failed to delete team");
+      }
+    }
+  };
+
   // --- Gallery Logic ---
   const handleOpenGallery = () => {
     // Assuming galleryData is now an array from App.js based on the new structure
@@ -389,6 +400,9 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
                   <TableCell align="right">
                     <IconButton size="small" onClick={() => handleOpenPoints(team)}>
                       <EditIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton size="small" color="error" onClick={() => handleDeletePoints(team.id)}>
+                      <DeleteIcon fontSize="small" />
                     </IconButton>
                   </TableCell>
                 </TableRow>
