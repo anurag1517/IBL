@@ -11,7 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { db } from '../../firebase';
-import { doc, setDoc, deleteDoc, onSnapshot, query, where, collection, orderBy } from 'firebase/firestore';
+import { doc, setDoc, deleteDoc, getDocs, onSnapshot, query, where, collection } from 'firebase/firestore';
 import LiveMatch from '../LiveMatch';
 
 
@@ -50,11 +50,13 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
     if (!isAuthenticated) return;
     const q = query(
       collection(db, 'matches'),
-      where('status', '==', 'live'),
-      orderBy('startedAt', 'desc')
+      where('status', '==', 'live')
     );
     const unsubscribe = onSnapshot(q, (snap) => {
-      setActiveMatches(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      const sorted = snap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (b.startedAt || '').localeCompare(a.startedAt || ''));
+      setActiveMatches(sorted);
       setLoadingMatches(false);
     });
     return () => unsubscribe();
