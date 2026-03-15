@@ -33,8 +33,17 @@ const SESSION_PREFIX = 'ibl-captain-';
 export default function CaptainDashboard() {
   // Which teamId is currently authenticated
   const [authedTeamId, setAuthedTeamId] = useState(() => {
+    const expiryDate = new Date('2026-03-16T02:00:00');
+
     for (const team of TEAMS) {
-      if (sessionStorage.getItem(SESSION_PREFIX + team.id) === 'true') {
+      const session = sessionStorage.getItem(SESSION_PREFIX + team.id);
+
+      if (new Date() >= expiryDate) {
+        sessionStorage.removeItem(SESSION_PREFIX + team.id);
+        continue;
+      }
+
+      if (session === 'true') {
         return team.id;
       }
     }
