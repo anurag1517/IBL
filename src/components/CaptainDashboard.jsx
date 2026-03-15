@@ -29,20 +29,19 @@ const TEAMS = [
 ];
 
 const SESSION_PREFIX = 'ibl-captain-';
+// End of 15-Mar-2026 IST (UTC+5:30) = 2026-03-15T18:29:59Z
+const LOGIN_DEADLINE = new Date('2026-03-15T18:29:59Z');
 
 export default function CaptainDashboard() {
   // Which teamId is currently authenticated
   const [authedTeamId, setAuthedTeamId] = useState(() => {
-    const expiryDate = new Date('2026-03-16T02:00:00');
-
     for (const team of TEAMS) {
       const session = sessionStorage.getItem(SESSION_PREFIX + team.id);
-
-      if (new Date() >= expiryDate) {
+      // Clear any lingering session if deadline has passed
+      if (new Date() > LOGIN_DEADLINE) {
         sessionStorage.removeItem(SESSION_PREFIX + team.id);
         continue;
       }
-
       if (session === 'true') {
         return team.id;
       }
@@ -82,7 +81,10 @@ export default function CaptainDashboard() {
   }, [authedTeamId]);
 
   // Open login dialog for a team
+  const isLoginLocked = new Date() > LOGIN_DEADLINE;
+
   const handleOpenLogin = (team) => {
+    if (isLoginLocked) return; // silently block after deadline
     setSelectedTeam(team);
     setPasswordInput('');
     setLoginError('');
@@ -92,6 +94,10 @@ export default function CaptainDashboard() {
   // Attempt login
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (isLoginLocked) {
+      setLoginError('Registration is closed. Login is no longer available.');
+      return;
+    }
     if (!passwordInput.trim()) return;
     setLoginLoading(true);
     setLoginError('');
@@ -398,11 +404,15 @@ export default function CaptainDashboard() {
           <Box sx={{
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             width: { xs: 54, sm: 70 }, height: { xs: 54, sm: 70 }, borderRadius: '50%',
-            background: 'linear-gradient(135deg, #ff2a2a, #880000)',
-            boxShadow: '0 0 30px rgba(255,42,42,0.4)',
+            background: isLoginLocked
+              ? 'linear-gradient(135deg, #444, #222)'
+              : 'linear-gradient(135deg, #ff2a2a, #880000)',
+            boxShadow: isLoginLocked
+              ? '0 0 30px rgba(100,100,100,0.3)'
+              : '0 0 30px rgba(255,42,42,0.4)',
             mb: { xs: 2, sm: 3 }
           }}>
-            <ShieldIcon sx={{ color: '#fff', fontSize: { xs: 26, sm: 36 } }} />
+            <LockIcon sx={{ color: '#fff', fontSize: { xs: 26, sm: 36 } }} />
           </Box>
           <Typography sx={{
             color: '#ffffff', fontFamily: "'Poppins', sans-serif",
@@ -410,7 +420,7 @@ export default function CaptainDashboard() {
             textTransform: 'uppercase', letterSpacing: { xs: 1, sm: 2 },
             fontSize: { xs: '1.8rem', sm: '2.2rem', md: '3rem' }
           }}>
-            <span style={{ color: '#ff2a2a' }}>Captain</span> Portal
+            <span style={{ color: isLoginLocked ? '#888' : '#ff2a2a' }}>Captain</span> Portal
           </Typography>
           <Typography sx={{
             color: 'rgba(255,255,255,0.4)',
@@ -418,9 +428,41 @@ export default function CaptainDashboard() {
             fontSize: { xs: '0.82rem', sm: '1rem' },
             px: { xs: 1, sm: 0 }
           }}>
-            Select your team and authenticate to manage your roster
+            {isLoginLocked
+              ? 'Registration is closed for this edition of IBL.'
+              : 'Select your team and authenticate to manage your roster'}
           </Typography>
         </Box>
+
+        {/* Lockout banner */}
+        {isLoginLocked && (
+          <Box sx={{
+            maxWidth: 520, mx: 'auto', mb: 5,
+            p: 4, borderRadius: '20px',
+            border: '1px solid rgba(255,255,255,0.1)',
+            backgroundColor: 'rgba(255,255,255,0.03)',
+            textAlign: 'center'
+          }}>
+            <LockIcon sx={{ fontSize: 48, color: 'rgba(255,255,255,0.15)', mb: 2 }} />
+            <Typography sx={{
+              color: '#fff', fontFamily: "'Poppins', sans-serif",
+              fontWeight: 800, fontSize: '1.3rem', mb: 1
+            }}>
+              Registration Closed
+            </Typography>
+            <Typography sx={{
+              color: 'rgba(255,255,255,0.4)', fontFamily: "'Montserrat', sans-serif",
+              fontSize: '0.9rem', lineHeight: 1.7
+            }}>
+              Team roster management was available until{' '}
+              <strong style={{ color: 'rgba(255,255,255,0.7)' }}>15 March 2026</strong>.<br />
+              Contact the admin for any roster changes.
+            </Typography>
+          </Box>
+        )}
+
+        {/* Hide team grid once locked */}
+        {isLoginLocked ? null : <>
 
         {/* Pool A */}
         <Typography sx={{
@@ -455,6 +497,7 @@ export default function CaptainDashboard() {
             </Grid>
           ))}
         </Grid>
+        </>}
       </Container>
 
       {/* Login Dialog */}
