@@ -20,6 +20,7 @@ const TEAM_IDS = {
   'Beast Bulls': 'beast-bulls',
   'Small Bois Squad': 'small-bois-squad',
   '420 Ballers': '420-ballers',
+  'The Black Mambas': 'the-black-mambas'
 };
 
 const Teams = () => {

@@ -60,6 +60,18 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
     return () => unsubscribe();
   }, [isAuthenticated]);
 
+  // --- Delete a live match ---
+  const handleDeleteMatch = async (matchId) => {
+    if (window.confirm('Are you sure you want to permanently delete this match? This cannot be undone.')) {
+      try {
+        await deleteDoc(doc(db, 'matches', matchId));
+      } catch (error) {
+        console.error('Error deleting match:', error);
+        alert('Failed to delete match.');
+      }
+    }
+  };
+
   // Fixture states
   const [openFixtureDialog, setOpenFixtureDialog] = useState(false);
   const [editingFixture, setEditingFixture] = useState(null);
@@ -233,8 +245,17 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
   };
 
   const handleResetPoints = async () => {
-    if (window.confirm("WARNING: This will reset ALL teams to 0 points. Are you absolutely sure?")) {
+    if (window.confirm("WARNING: This will reset ALL teams to 0 points AND permanently delete ALL match records and player stats. Are you absolutely sure?")) {
       try {
+        // 1. Delete all match documents
+        const matchesSnap = await getDocs(collection(db, 'matches'));
+        await Promise.all(matchesSnap.docs.map(d => deleteDoc(d.ref)));
+
+        // 2. Delete all player stat documents
+        const statsSnap = await getDocs(collection(db, 'stats'));
+        await Promise.all(statsSnap.docs.map(d => deleteDoc(d.ref)));
+
+        // 3. Reset each team in the points table to 0
         for (const team of pointsTable) {
           await setDoc(doc(db, 'pointsTable', team.id), {
             ...team,
@@ -245,7 +266,7 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
             pointDiff: 0
           });
         }
-        alert("Points have been successfully reset to 0.");
+        alert("All points, match records, and player stats have been reset.");
       } catch (error) {
         console.error("Error resetting points: ", error);
         alert("Failed to reset points");
@@ -254,8 +275,27 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
   };
 
   const handleDeletePoints = async (id) => {
-    if (window.confirm("Are you sure you want to delete this team from the points table?")) {
+    if (window.confirm("Are you sure? This will also delete all matches involving this team and the stats of players on those rosters.")) {
       try {
+        // 1. Find all matches involving this team
+        const matchesQ = query(collection(db, 'matches'), where('teamIds', 'array-contains', id));
+        const matchesSnap = await getDocs(matchesQ);
+
+        // 2. Collect all player names that appeared in those matches
+        const playerNames = new Set();
+        matchesSnap.docs.forEach(d => {
+          const data = d.data();
+          (data.membersA || []).forEach(n => playerNames.add(n));
+          (data.membersB || []).forEach(n => playerNames.add(n));
+        });
+
+        // 3. Delete those match documents
+        await Promise.all(matchesSnap.docs.map(d => deleteDoc(d.ref)));
+
+        // 4. Delete the stat documents for those players
+        await Promise.all([...playerNames].map(name => deleteDoc(doc(db, 'stats', name))));
+
+        // 5. Delete the team from the points table
         await deleteDoc(doc(db, 'pointsTable', id));
       } catch (error) {
         console.error("Error deleting team: ", error);
@@ -828,7 +868,7 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
                       </Box>
                     }
                   />
-                  <ListItemSecondaryAction>
+                  <ListItemSecondaryAction sx={{ display: 'flex', gap: 1 }}>
                     <Button
                       variant="contained"
                       startIcon={<PlayArrowIcon />}
@@ -837,6 +877,13 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
                     >
                       Continue Scoring
                     </Button>
+                    <IconButton
+                      color="error"
+                      onClick={() => handleDeleteMatch(match.id)}
+                      title="Delete this match"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
               ))}
