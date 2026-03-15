@@ -18,14 +18,14 @@ import {
 
 // 8 teams with pool info — passwords are stored in Firestore
 const TEAMS = [
-  { id: 'dark-knights',       name: 'Dark Knights',           pool: 'A' },
-  { id: 'hellfire-clan',      name: 'Hellfire Clan',          pool: 'A' },
-  { id: 'akatsuki',           name: 'Akatsuki',               pool: 'A' },
-  { id: 'real-slim-shadys',   name: "The Real Slim Shady's",  pool: 'A' },
-  { id: 'skull-scorchers',    name: 'Skull Scorchers',        pool: 'B' },
-  { id: 'beast-bulls',        name: 'Beast Bulls',            pool: 'B' },
-  { id: 'small-bois-squad',   name: 'Small Bois Squad',       pool: 'B' },
-  { id: '420-ballers',        name: '420 Ballers',            pool: 'B' },
+  { id: 'dark-knights', name: 'Dark Knights', pool: 'B' },
+  { id: 'hellfire-clan', name: 'Hellfire Clan', pool: 'A' },
+  { id: 'the-black-mambas', name: 'The Black Mambas', pool: 'B' },
+  { id: 'real-slim-shadys', name: "The Real Slim Shady's", pool: 'A' },
+  { id: 'skull-scorchers', name: 'Skull Scorchers', pool: 'B' },
+  { id: 'beast-bulls', name: 'Beast Bulls', pool: 'B' },
+  { id: 'small-bois-squad', name: 'Small Bois Squad', pool: 'A' },
+  { id: '420-ballers', name: '420 Ballers', pool: 'A' },
 ];
 
 const SESSION_PREFIX = 'ibl-captain-';
