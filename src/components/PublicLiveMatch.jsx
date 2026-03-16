@@ -7,14 +7,15 @@ import ShieldIcon from '@mui/icons-material/Shield';
 import Footer from './Footer';
 import { db } from '../firebase';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
 export default function PublicLiveMatch() {
   const [liveMatches, setLiveMatches] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Real-time listener for all live matches
+  // Real-time listener for all live and suspended matches
   useEffect(() => {
-    const q = query(collection(db, 'matches'), where('status', '==', 'live'));
+    const q = query(collection(db, 'matches'), where('status', 'in', ['live', 'suspended']));
     const unsubscribe = onSnapshot(q, (snap) => {
       const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       setLiveMatches(data);
@@ -117,24 +118,38 @@ function LiveMatchCard({ match }) {
     <Paper elevation={0} sx={{
       p: { xs: 2, sm: 3.5 }, mb: 3,
       backgroundColor: '#0a0a0a',
-      border: '1px solid rgba(255,42,42,0.35)',
+      border: `1px solid ${match.status === 'suspended' ? 'rgba(255,200,50,0.35)' : 'rgba(255,42,42,0.35)'}`,
       borderRadius: '22px',
-      animation: 'livePulse 2.5s infinite',
+      animation: match.status === 'suspended' ? 'none' : 'livePulse 2.5s infinite',
     }}>
       {/* Live badge + match id */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Box sx={{
-            width: 10, height: 10, borderRadius: '50%',
-            backgroundColor: '#ff2a2a',
-            animation: 'dotBlink 1s infinite',
-          }} />
-          <Typography sx={{
-            color: '#ff2a2a', fontFamily: "'Montserrat', sans-serif",
-            fontWeight: 800, fontSize: '0.75rem', letterSpacing: 2, textTransform: 'uppercase',
-          }}>
-            Live Now
-          </Typography>
+          {match.status === 'suspended' ? (
+            <>
+              <PauseCircleIcon sx={{ color: '#ffcc32', fontSize: 20 }} />
+              <Typography sx={{
+                color: '#ffcc32', fontFamily: "'Montserrat', sans-serif",
+                fontWeight: 800, fontSize: '0.75rem', letterSpacing: 2, textTransform: 'uppercase',
+              }}>
+                Suspended
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Box sx={{
+                width: 10, height: 10, borderRadius: '50%',
+                backgroundColor: '#ff2a2a',
+                animation: 'dotBlink 1s infinite',
+              }} />
+              <Typography sx={{
+                color: '#ff2a2a', fontFamily: "'Montserrat', sans-serif",
+                fontWeight: 800, fontSize: '0.75rem', letterSpacing: 2, textTransform: 'uppercase',
+              }}>
+                Live Now
+              </Typography>
+            </>
+          )}
         </Box>
         <Typography sx={{
           color: 'rgba(255,255,255,0.2)', fontFamily: "'Montserrat', sans-serif",

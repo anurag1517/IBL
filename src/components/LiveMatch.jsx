@@ -9,6 +9,8 @@ import SportsBasketballIcon from '@mui/icons-material/SportsBasketball';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Footer from './Footer';
 import { db } from '../firebase';
 import {
@@ -76,9 +78,10 @@ function TeamSelectionCard({ team, role, selected, disabled, onClick }) {
 
 function PlayerRow({ name, matchScore, existingScore, onAdd, teamColor }) {
   const total = (existingScore || 0) + (matchScore || 0);
+  const scoreLabel = (matchScore || 0) >= 0 ? `+${matchScore || 0}` : `${matchScore || 0}`;
   return (
     <Box sx={{
-      display: 'flex', alignItems: 'center', gap: { xs: 0.5, sm: 1 },
+      display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 1.5 },
       px: { xs: 1.5, sm: 2 }, py: 1.5, mb: 1,
       backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '12px',
       border: matchScore > 0 ? `1px solid ${teamColor}44` : '1px solid rgba(255,255,255,0.06)',
@@ -89,7 +92,7 @@ function PlayerRow({ name, matchScore, existingScore, onAdd, teamColor }) {
           <Typography sx={{ color: total > 0 ? teamColor : 'rgba(255,255,255,0.25)', fontFamily: "'Montserrat', sans-serif", fontWeight: 900, fontSize: '1rem', lineHeight: 1 }}>{total}</Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: '3px' }}>
-          <Typography sx={{ color: matchScore > 0 ? teamColor : 'rgba(255,255,255,0.2)', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '0.6rem' }}>+{matchScore || 0}</Typography>
+          <Typography sx={{ color: matchScore > 0 ? teamColor : 'rgba(255,255,255,0.2)', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '0.6rem' }}>{scoreLabel}</Typography>
           <Typography sx={{ color: 'rgba(255,255,255,0.15)', fontSize: '0.6rem' }}>|</Typography>
           <Typography sx={{ color: 'rgba(255,255,255,0.3)', fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: '0.6rem' }}>{existingScore || 0}</Typography>
         </Box>
@@ -97,11 +100,38 @@ function PlayerRow({ name, matchScore, existingScore, onAdd, teamColor }) {
       <Typography sx={{ color: '#fff', fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: { xs: '0.78rem', sm: '0.88rem' }, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
         {name}
       </Typography>
-      {[1, 2, 3].map((pts) => (
-        <Button key={pts} variant="outlined" size="small" onClick={() => onAdd(name, pts)} sx={{ minWidth: 0, px: { xs: '6px', sm: '10px' }, py: '4px', borderColor: `${teamColor}55`, color: teamColor, fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: { xs: '0.7rem', sm: '0.75rem' }, borderRadius: '8px', '&:hover': { backgroundColor: `${teamColor}22`, borderColor: teamColor, transform: 'scale(1.05)' }, transition: 'all 0.15s ease' }}>
-          +{pts}
+      <Box sx={{ display: 'flex', gap: { xs: '6px', sm: '10px' }, alignItems: 'center' }}>
+        <Button
+          variant="outlined" size="small"
+          onClick={() => onAdd(name, -1)}
+          sx={{
+            minWidth: 0, px: { xs: '10px', sm: '14px' }, py: { xs: '6px', sm: '8px' },
+            borderColor: 'rgba(255,100,100,0.5)', color: '#ff6464',
+            fontFamily: "'Montserrat', sans-serif", fontWeight: 800,
+            fontSize: { xs: '0.82rem', sm: '0.9rem' }, borderRadius: '10px',
+            '&:hover': { backgroundColor: 'rgba(255,100,100,0.15)', borderColor: '#ff6464', transform: 'scale(1.08)' },
+            transition: 'all 0.15s ease',
+          }}
+        >
+          −1
         </Button>
-      ))}
+        {[1, 2, 3].map((pts) => (
+          <Button
+            key={pts} variant="outlined" size="small"
+            onClick={() => onAdd(name, pts)}
+            sx={{
+              minWidth: 0, px: { xs: '10px', sm: '14px' }, py: { xs: '6px', sm: '8px' },
+              borderColor: `${teamColor}55`, color: teamColor,
+              fontFamily: "'Montserrat', sans-serif", fontWeight: 800,
+              fontSize: { xs: '0.82rem', sm: '0.9rem' }, borderRadius: '10px',
+              '&:hover': { backgroundColor: `${teamColor}22`, borderColor: teamColor, transform: 'scale(1.08)' },
+              transition: 'all 0.15s ease',
+            }}
+          >
+            +{pts}
+          </Button>
+        ))}
+      </Box>
     </Box>
   );
 }
@@ -158,7 +188,7 @@ export default function LiveMatch({ pointsTable }) {
 
   const TEAMS = dynamicTeams.length > 0 ? dynamicTeams : ALL_TEAMS;
 
-  const [phase, setPhase] = useState('select'); // 'select' | 'scoring' | 'summary'
+  const [phase, setPhase] = useState('select'); // 'select' | 'scoring' | 'suspended' | 'summary'
   const [matchId, setMatchId] = useState(urlMatchId || null);
 
   const [teamA, setTeamA] = useState(null);
@@ -175,21 +205,21 @@ export default function LiveMatch({ pointsTable }) {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [matchSummary, setMatchSummary] = useState(null);
   const [resuming, setResuming] = useState(true); // loading state for resume check
+  const [suspendedAt, setSuspendedAt] = useState(null);
 
   // ── On mount / ID change: load the match ────────────────────────────────
   useEffect(() => {
     const idToLoad = urlMatchId || sessionStorage.getItem(SESSION_MATCH_KEY);
-    if (!idToLoad) { 
-      setResuming(false); 
+    if (!idToLoad) {
+      setResuming(false);
       if (urlMatchId) navigate('/admin'); // invalid ID URL
-      return; 
+      return;
     }
 
     (async () => {
       try {
         const snap = await getDoc(doc(db, 'matches', idToLoad));
-        if (snap.exists() && snap.data().status === 'live') {
-          const data = snap.data();
+        const loadMatchData = (data, newPhase) => {
           const tA = TEAMS.find(t => t.id === data.teamAId);
           const tB = TEAMS.find(t => t.id === data.teamBId);
           if (tA && tB) {
@@ -202,27 +232,41 @@ export default function LiveMatch({ pointsTable }) {
             setExistingScoresB(data.existingScoresB || {});
             setMembersA(data.membersA || []);
             setMembersB(data.membersB || []);
-            setPhase('scoring');
-          } else {
+            if (data.suspendedAt) setSuspendedAt(data.suspendedAt);
+            setPhase(newPhase);
+            return true;
+          }
+          return false;
+        };
+
+        if (snap.exists() && snap.data().status === 'live') {
+          const data = snap.data();
+          if (!loadMatchData(data, 'scoring')) {
+            sessionStorage.removeItem(SESSION_MATCH_KEY);
+            if (urlMatchId) navigate('/admin');
+          }
+        } else if (snap.exists() && snap.data().status === 'suspended') {
+          const data = snap.data();
+          if (!loadMatchData(data, 'suspended')) {
             sessionStorage.removeItem(SESSION_MATCH_KEY);
             if (urlMatchId) navigate('/admin');
           }
         } else if (snap.exists() && snap.data().status === 'completed') {
-            // Already completed - maybe show summary
-            const data = snap.data();
-            const tA = TEAMS.find(t => t.id === data.teamAId) || { name: data.teamAName, id: data.teamAId };
-            const tB = TEAMS.find(t => t.id === data.teamBId) || { name: data.teamBName, id: data.teamBId };
-            const allScored = [
-                ...Object.entries(data.scoresA || {}).map(([name, pts]) => ({ name, pts, team: data.teamAName })),
-                ...Object.entries(data.scoresB || {}).map(([name, pts]) => ({ name, pts, team: data.teamBName })),
-            ];
-            const top5 = [...allScored].sort((a, b) => b.pts - a.pts).slice(0, 5);
-            setMatchSummary({ 
-                teamA: { team: tA, total: data.totalA }, 
-                teamB: { team: tB, total: data.totalB }, 
-                top5 
-            });
-            setPhase('summary');
+          // Already completed - maybe show summary
+          const data = snap.data();
+          const tA = TEAMS.find(t => t.id === data.teamAId) || { name: data.teamAName, id: data.teamAId };
+          const tB = TEAMS.find(t => t.id === data.teamBId) || { name: data.teamBName, id: data.teamBId };
+          const allScored = [
+            ...Object.entries(data.scoresA || {}).map(([name, pts]) => ({ name, pts, team: data.teamAName })),
+            ...Object.entries(data.scoresB || {}).map(([name, pts]) => ({ name, pts, team: data.teamBName })),
+          ];
+          const top5 = [...allScored].sort((a, b) => b.pts - a.pts).slice(0, 5);
+          setMatchSummary({
+            teamA: { team: tA, total: data.totalA },
+            teamB: { team: tB, total: data.totalB },
+            top5
+          });
+          setPhase('summary');
         } else {
           sessionStorage.removeItem(SESSION_MATCH_KEY);
           if (urlMatchId) navigate('/admin');
@@ -310,12 +354,54 @@ export default function LiveMatch({ pointsTable }) {
     setSaving(false);
   };
 
+  // ── Suspend match ────────────────────────────────────────────────────────
+  const handleSuspend = async () => {
+    if (!matchId) return;
+    setSaving(true);
+    try {
+      const now = new Date().toISOString();
+      await updateDoc(doc(db, 'matches', matchId), {
+        status: 'suspended',
+        suspendedAt: now,
+        scoresA,
+        scoresB,
+      });
+      setSuspendedAt(now);
+      setPhase('suspended');
+      setSnackbar({ open: true, message: 'Match suspended. Scores saved.', severity: 'warning' });
+    } catch (err) {
+      console.error(err);
+      setSnackbar({ open: true, message: 'Failed to suspend match.', severity: 'error' });
+    }
+    setSaving(false);
+  };
+
+  // ── Resume match ─────────────────────────────────────────────────────────
+  const handleResume = async () => {
+    if (!matchId) return;
+    setSaving(true);
+    try {
+      await updateDoc(doc(db, 'matches', matchId), {
+        status: 'live',
+        suspendedAt: null,
+        resumedAt: new Date().toISOString(),
+      });
+      setSuspendedAt(null);
+      setPhase('scoring');
+      setSnackbar({ open: true, message: 'Match resumed!', severity: 'success' });
+    } catch (err) {
+      console.error(err);
+      setSnackbar({ open: true, message: 'Failed to resume match.', severity: 'error' });
+    }
+    setSaving(false);
+  };
+
   // ── Add points ────────────────────────────────────────────────────────────
   const addPoints = useCallback((team, name, pts) => {
     if (team === 'A') {
-      setScoresA(prev => ({ ...prev, [name]: (prev[name] || 0) + pts }));
+      setScoresA(prev => ({ ...prev, [name]: Math.max(0, (prev[name] || 0) + pts) }));
     } else {
-      setScoresB(prev => ({ ...prev, [name]: (prev[name] || 0) + pts }));
+      setScoresB(prev => ({ ...prev, [name]: Math.max(0, (prev[name] || 0) + pts) }));
     }
   }, []);
 
@@ -500,6 +586,71 @@ export default function LiveMatch({ pointsTable }) {
   }
 
   // ════════════════════════════════════════════════════════════════════════
+  // PHASE: SUSPENDED
+  // ════════════════════════════════════════════════════════════════════════
+  if (phase === 'suspended') {
+    const totalA = teamTotal(scoresA);
+    const totalB = teamTotal(scoresB);
+    return (
+      <>
+        <Container maxWidth="md" sx={{ mt: 4, mb: 6 }}>
+          <Box sx={{ p: { xs: 2, sm: 4 }, backgroundColor: '#000', borderRadius: '30px', border: '1px solid rgba(255,200,50,0.4)', position: 'relative', overflow: 'hidden' }}>
+            <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #ffcc32, transparent)', opacity: 0.5 }} />
+            
+            <Box sx={{ textAlign: 'center', mb: 4 }}>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 64, height: 64, borderRadius: '50%', background: 'linear-gradient(135deg, rgba(255,200,50,0.2), rgba(255,200,50,0.05))', border: '1px solid rgba(255,200,50,0.3)', mb: 2 }}>
+                <PauseCircleIcon sx={{ color: '#ffcc32', fontSize: 36 }} />
+              </Box>
+              <Typography sx={{ color: '#fff', fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: { xs: '1.8rem', sm: '2.2rem' }, textTransform: 'uppercase', letterSpacing: 2 }}>
+                Match <span style={{ color: '#ffcc32' }}>Suspended</span>
+              </Typography>
+              {suspendedAt && (
+                <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontFamily: "'Montserrat', sans-serif", fontSize: '0.85rem', mt: 1 }}>
+                  Suspended at {new Date(suspendedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </Typography>
+              )}
+            </Box>
+
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: { xs: 2, sm: 4 }, mb: 5, flexWrap: 'wrap' }}>
+              {[
+                { team: teamA, total: totalA, color: '#ff2a2a', label: 'Team A' },
+                { team: teamB, total: totalB, color: '#2a8fff', label: 'Team B' },
+              ].map(({ team, total, color, label }, i) => (
+                <React.Fragment key={team?.id || i}>
+                  {i === 1 && <Typography sx={{ color: 'rgba(255,255,255,0.2)', fontWeight: 900, fontSize: '2rem' }}>VS</Typography>}
+                  <Box sx={{ textAlign: 'center', p: { xs: 2.5, sm: 3.5 }, backgroundColor: '#0a0a0a', border: `1px solid ${color}33`, borderRadius: '20px', minWidth: 140 }}>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontFamily: "'Montserrat', sans-serif", fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: 2, mb: 0.5 }}>{label}</Typography>
+                    <Typography sx={{ color: '#fff', fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: { xs: '0.9rem', sm: '1.05rem' }, mb: 1 }}>{team?.name || 'Unknown'}</Typography>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Poppins', sans-serif", fontWeight: 900, fontSize: { xs: '2.5rem', sm: '3rem' }, lineHeight: 1 }}>{total}</Typography>
+                  </Box>
+                </React.Fragment>
+              ))}
+            </Box>
+
+            <Box sx={{ textAlign: 'center' }}>
+              <Button
+                variant="contained" size="large"
+                onClick={handleResume} disabled={saving}
+                startIcon={saving ? <CircularProgress size={18} color="inherit" /> : <PlayArrowIcon />}
+                sx={{
+                  background: 'linear-gradient(135deg, #10b981, #059669)',
+                  fontFamily: "'Poppins', sans-serif", fontWeight: 800,
+                  fontSize: { xs: '1rem', sm: '1.1rem' }, borderRadius: '14px', px: 5, py: 1.5,
+                  boxShadow: '0 6px 24px rgba(16,185,129,0.3)',
+                  '&:hover': { background: 'linear-gradient(135deg, #34d399, #10b981)', boxShadow: '0 8px 28px rgba(16,185,129,0.4)' },
+                }}
+              >
+                {saving ? 'Resuming…' : 'Resume Match'}
+              </Button>
+            </Box>
+          </Box>
+        </Container>
+        <Footer />
+      </>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
   // PHASE: SCORING
   // ════════════════════════════════════════════════════════════════════════
   if (phase === 'scoring') {
@@ -535,7 +686,22 @@ export default function LiveMatch({ pointsTable }) {
               <Typography sx={{ color: 'rgba(255,255,255,0.3)', fontWeight: 700, fontSize: '1.2rem' }}>—</Typography>
               <Typography sx={{ color: '#2a8fff', fontFamily: "'Poppins', sans-serif", fontWeight: 900, fontSize: '1.8rem' }}>{totalB}</Typography>
             </Box>
-            <Button variant="outlined" size="small" onClick={handleReset} sx={{ borderColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.5)', borderRadius: '10px', '&:hover': { borderColor: '#ff2a2a', color: '#ff2a2a' } }}>Cancel</Button>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Button
+                variant="outlined" size="small"
+                onClick={handleSuspend}
+                disabled={saving}
+                startIcon={<PauseCircleIcon sx={{ fontSize: '16px !important' }} />}
+                sx={{
+                  borderColor: 'rgba(255,200,50,0.5)', color: '#ffcc32',
+                  borderRadius: '10px', fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '0.75rem',
+                  '&:hover': { borderColor: '#ffcc32', backgroundColor: 'rgba(255,200,50,0.1)' },
+                }}
+              >
+                Suspend
+              </Button>
+              <Button variant="outlined" size="small" onClick={handleReset} sx={{ borderColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.5)', borderRadius: '10px', '&:hover': { borderColor: '#ff2a2a', color: '#ff2a2a' } }}>Cancel</Button>
+            </Box>
           </Box>
 
           <Box sx={{ display: 'flex', gap: { xs: 1.5, sm: 3 }, flexDirection: { xs: 'column', md: 'row' }, alignItems: 'flex-start' }}>

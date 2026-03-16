@@ -50,7 +50,7 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
     if (!isAuthenticated) return;
     const q = query(
       collection(db, 'matches'),
-      where('status', '==', 'live')
+      where('status', 'in', ['live', 'suspended'])
     );
     const unsubscribe = onSnapshot(q, (snap) => {
       const sorted = snap.docs
@@ -853,9 +853,17 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
                 <ListItem key={match.id} component={Paper} sx={{ mb: 2, p: 2, border: '1px solid #ff2a2a44' }}>
                   <ListItemText
                     primary={
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        {match.teamAName} vs {match.teamBName}
-                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography variant="subtitle1" fontWeight="bold">
+                          {match.teamAName} vs {match.teamBName}
+                        </Typography>
+                        {match.status === 'suspended' && (
+                          <Chip label="Suspended" size="small" sx={{ backgroundColor: 'rgba(255,200,50,0.15)', color: '#d97706', border: '1px solid rgba(255,200,50,0.4)', fontWeight: 'bold' }} />
+                        )}
+                        {match.status === 'live' && (
+                          <span style={{ height: 8, width: 8, borderRadius: '50%', backgroundColor: '#ff2a2a', display: 'inline-block' }} />
+                        )}
+                      </Box>
                     }
                     secondary={
                       <Box sx={{ mt: 0.5 }}>
@@ -865,7 +873,7 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
                         <Chip 
                           label={`${match.totalA || 0} - ${match.totalB || 0}`} 
                           size="small" 
-                          sx={{ mt: 1, backgroundColor: '#ff2a2a', color: '#fff', fontWeight: 'bold' }} 
+                          sx={{ mt: 1, backgroundColor: match.status === 'suspended' ? '#f59e0b' : '#ff2a2a', color: '#fff', fontWeight: 'bold' }} 
                         />
                       </Box>
                     }
@@ -873,11 +881,11 @@ const AdminDashboard = ({ fixtures, pointsTable, stats, galleryData, archives })
                   <ListItemSecondaryAction sx={{ display: 'flex', gap: 1 }}>
                     <Button
                       variant="contained"
-                      startIcon={<PlayArrowIcon />}
+                      startIcon={match.status === 'suspended' ? <PlayArrowIcon /> : <PlayArrowIcon />}
                       onClick={() => navigate(`/admin/scoring/${match.id}`)}
-                      sx={{ backgroundColor: '#2a8fff', '&:hover': { backgroundColor: '#1a76d2' } }}
+                      sx={{ backgroundColor: match.status === 'suspended' ? '#f59e0b' : '#2a8fff', '&:hover': { backgroundColor: match.status === 'suspended' ? '#d97706' : '#1a76d2' } }}
                     >
-                      Continue Scoring
+                      {match.status === 'suspended' ? 'Resume Match' : 'Continue Scoring'}
                     </Button>
                     <IconButton
                       color="error"
